@@ -1,0 +1,23 @@
+{
+  "name": "elfa-bakery",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Website for Elfa Bakery, Via Sardegna 40, Milano",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -n client,server -c yellow,green \"npm run dev -w client\" \"npm run dev -w server\"",
+    "build": "npm run build -w client",
+    "lint": "npm run lint -w client && npm run lint -w server",
+    "check:rules": "node scripts/check-writing-rules.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.4.2"
+  }
+}

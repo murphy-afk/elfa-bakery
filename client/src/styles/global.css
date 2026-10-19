@@ -1,0 +1,135 @@
+/* Global reset and base styles. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--text-body);
+  background-color: var(--color-cream);
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--color-red);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Site shell layout */
+
+.site {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.site-main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-xl) var(--gutter);
+}
+
+.site-header {
+  background-color: var(--color-espresso);
+  color: var(--text-on-dark);
+  padding: var(--space-md) var(--gutter);
+}
+
+.site-logo {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-amber);
+  text-decoration: none;
+}
+
+.site-footer {
+  background-color: var(--color-espresso);
+  color: var(--text-on-dark);
+  padding: var(--space-xl) var(--gutter);
+  text-align: center;
+}
+
+.site-footer p {
+  margin: var(--space-xs) 0;
+  font-size: var(--text-sm);
+}
+
+/* Home hero */
+
+.home-hero {
+  text-align: center;
+  padding: var(--space-3xl) var(--space-lg);
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.home-hero h1 {
+  font-size: var(--text-4xl);
+  color: var(--color-red);
+  margin-bottom: var(--space-md);
+}
+
+.home-tagline {
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  max-width: 32rem;
+  margin: 0 auto;
+}
