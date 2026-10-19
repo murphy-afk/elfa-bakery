@@ -44,7 +44,6 @@ This starts the client on http://localhost:5173 and the API on http://localhost:
 ```bash
 npm run lint
 npm run check:rules
-npm run format:check
 ```
 
 check:rules enforces the mandatory writing rules: no em dashes, no emojis, no lines that only contain > or />.

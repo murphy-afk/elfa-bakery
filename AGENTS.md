@@ -67,6 +67,7 @@ These rules apply to every file you write: code, comments, docs, and UI copy.
 
 ## Git conventions
 
+- Never commit without asking for permission first. Wait for the user to approve before running git commit.
 - Small, focused commits, imperative subject line, no emojis in commit messages.
 
 ## Before you finish
