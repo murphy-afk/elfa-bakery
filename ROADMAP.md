@@ -2,7 +2,7 @@
 
 Project to design and build a new website for Elfa Bakery, a bakery, coffee shop, pastry shop, and deli in Milan, Italy.
 
-Status: planning phase.
+Status: session 2 in progress, content and data.
 Last updated: 2026-10-19.
 
 ## 1. Project goals
@@ -50,6 +50,8 @@ All public data gathered on 2026-10-19 from Google Maps, Facebook, Instagram, th
 - Note: values differ per source. Use conservative numbers on the site or link to the Google listing.
 
 ### Menu structure
+
+The Qromo in-shop catalog currently returns "Unavailable". The categories below were captured during Session 0. The shop Glovo listing filled the gap with prices and more categories, see docs/menu-price-research.md.
 
 From the digital catalog on Qromo, the categories are:
 
@@ -202,12 +204,20 @@ Price level: cheap, about 1 to 10 euro per person.
 - [x] Initialize git, Node, and the client and server folders.
 - [x] Add linting and formatting with the rules from AGENTS.md.
 - [x] Write db/schema.sql and db/seed.sql for MySQL Workbench.
-- [x] Owner runs schema.sql then seed.sql in Workbench and fills in the real prices.
+- [ ] Owner runs schema.sql then seed.sql in Workbench and fills in the real prices. Moved to Session 2, the prices are still NULL.
 
-### Session 2. Content and data
+### Session 2. Content and data, in progress
 
-- Collect from the owner: logo, real photos, exact prices, correct hours, official phone number, legal company data for the privacy policy.
-- Seed the database with the real menu, allergens, hours, and settings.
+- [x] Collect public menu data. The in-shop Qromo catalog returns "Unavailable", so the shop Glovo listing was used instead. Full list with prices in docs/menu-price-research.md.
+- [x] Rewrite db/seed.sql with the real menu: 12 categories, 69 items, sourced names and descriptions, every price still NULL.
+- [x] Fix the guessed items that Session 1 had put in the seed. Bagel Classico, Insalata Mista, and Insalata con Salmone were not in any source and are gone. Salad and side dish categories are now empty with a TODO instead of holding invented rows.
+- [x] Write docs/owner-intake.md, the single checklist to send to the owner.
+- [ ] Collect from the owner: logo, real photos, exact prices, correct hours, official phone number, legal company data for the privacy policy.
+- [ ] Fill in prices in Workbench once the owner confirms them.
+- [ ] Complete the allergen matrix, it is a legal requirement and only 5 items have rows today.
+- [ ] Owner runs schema.sql then seed.sql in Workbench against the real database.
+
+Blocked items are tracked in docs/owner-intake.md.
 
 ### Session 3. API
 
@@ -248,8 +258,12 @@ Price level: cheap, about 1 to 10 euro per person.
 
 ## 7. References
 
+- docs/menu-price-research.md: every public menu item and price found, with the source for each block. Research only, no price from it is allowed in db/seed.sql until the owner confirms it.
+- docs/owner-intake.md: the checklist of everything only the owner can answer. Send this, then paste the answers back.
 - docs/references/ holds photos downloaded from public listings for internal design study only. These images are watermarked by third party sites and must not ship in the final website.
-- Digital menu catalog: https://elfabakerymenu.qromo.it/
+- Digital menu catalog: https://elfabakerymenu.qromo.it/ (returns "Unavailable" as of 2026-10-19)
+- Glovo store page: https://glovoapp.com/it/it/milano/stores/elfa-bakery-mil
+- Sluurpy listing: https://www.sluurpy.it/milano/ristorante/10301158/elfa-bakery
 - Facebook page: https://www.facebook.com/elfabakery
 - Instagram profile: https://www.instagram.com/elfa_bakery_milan
 - Review pages: the Halalfoodle, Restaurant Guru, and Tripadvisor listings for Elfa Bakery.
