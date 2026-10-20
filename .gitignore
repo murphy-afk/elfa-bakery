@@ -7,3 +7,4 @@ build/
 Thumbs.db
 .vite/
 coverage/
+scripts/.smoke-app.cjs
