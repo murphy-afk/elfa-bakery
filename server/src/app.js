@@ -4,6 +4,7 @@ import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 
 import menuRouter from './routes/menu.js'
+import allergensRouter from './routes/allergens.js'
 import settingsRouter from './routes/settings.js'
 import hoursRouter from './routes/hours.js'
 import galleryRouter from './routes/gallery.js'
@@ -31,6 +32,7 @@ app.get('/api/health', (req, res) => {
 })
 
 app.use('/api/menu', menuRouter)
+app.use('/api/allergens', allergensRouter)
 app.use('/api/settings', settingsRouter)
 app.use('/api/hours', hoursRouter)
 app.use('/api/gallery', galleryRouter)

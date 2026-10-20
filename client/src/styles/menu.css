@@ -1,0 +1,204 @@
+/* Menu page. */
+
+.menu-intro {
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-xl);
+}
+
+.menu-intro h1 {
+  font-size: var(--text-3xl);
+  color: var(--color-red);
+}
+
+.menu-intro p {
+  margin-top: var(--space-md);
+  max-width: var(--measure);
+  color: var(--text-muted);
+}
+
+@media (min-width: 48rem) {
+  .menu-intro h1 {
+    font-size: var(--text-4xl);
+  }
+}
+
+/* Category tabs */
+
+.menu-tabs {
+  padding-block: var(--space-sm);
+  background-color: var(--color-cream);
+  border-bottom: var(--border-thin);
+}
+
+.menu-tabs-list {
+  display: flex;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0 0 var(--space-xs);
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.menu-tab {
+  display: inline-block;
+  flex: 0 0 auto;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-surface);
+  color: var(--text-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  border: var(--border-thin);
+  border-radius: var(--radius-round);
+}
+
+.menu-tab:hover {
+  border-color: var(--color-amber);
+  background-color: var(--color-amber);
+  color: var(--text-on-amber);
+}
+
+.menu-tab-count {
+  display: inline-block;
+  margin-left: var(--space-xs);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+/* Category sections */
+
+.menu-category {
+  padding-top: var(--space-2xl);
+  scroll-margin-top: 6rem;
+}
+
+.menu-category-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 3px solid var(--color-amber);
+}
+
+.menu-category-title {
+  font-size: var(--text-2xl);
+}
+
+.menu-category-count {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.menu-list {
+  display: grid;
+  gap: var(--space-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm) var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--color-surface);
+  border: var(--border-thin);
+  border-radius: var(--radius-md);
+}
+
+.menu-item:hover {
+  border-color: var(--color-wood);
+}
+
+.menu-item-main {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.menu-item-name {
+  font-size: var(--text-base);
+}
+
+.menu-item-desc {
+  margin-top: var(--space-xs);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.menu-item-aside {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.menu-item-badge {
+  display: block;
+  margin-top: var(--space-xs);
+  padding: 2px var(--space-sm);
+  background-color: var(--color-amber);
+  color: var(--text-on-amber);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  border-radius: var(--radius-round);
+}
+
+/* Empty category notice */
+
+.menu-empty {
+  padding: var(--space-lg);
+  background-color: var(--color-surface-sunken);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* Allergen list, required on the menu page */
+
+.menu-allergens {
+  margin-top: var(--space-3xl);
+  padding: var(--space-lg);
+  background-color: var(--color-surface);
+  border: var(--border-thin);
+  border-left: 4px solid var(--color-red);
+  border-radius: var(--radius-md);
+}
+
+.menu-allergens-title {
+  font-size: var(--text-xl);
+}
+
+.menu-allergens-text {
+  margin-top: var(--space-sm);
+  max-width: var(--measure);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.menu-allergens-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin: var(--space-md) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-allergen {
+  padding: var(--space-xs) var(--space-md);
+  background-color: var(--color-surface-sunken);
+  font-size: var(--text-xs);
+  border: var(--border-thin);
+  border-radius: var(--radius-round);
+}

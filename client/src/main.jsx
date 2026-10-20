@@ -5,6 +5,10 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
 import './styles/tokens.css'
 import './styles/global.css'
+import './styles/layout.css'
+import './styles/components.css'
+import './styles/home.css'
+import './styles/menu.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
