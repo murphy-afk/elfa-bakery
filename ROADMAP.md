@@ -2,7 +2,7 @@
 
 Project to design and build a new website for Elfa Bakery, a bakery, coffee shop, pastry shop, and deli in Milan, Italy.
 
-Status: API tests are in, sessions 0 to 4 are complete apart from the owner run of the SQL scripts. Session 5 leftovers: English copy, Open Graph image, prerender.
+Status: API tests are in, sessions 0 to 4 are complete apart from the owner run of the SQL scripts. Session 5 leftovers: English copy, Open Graph image, prerender. Instagram is the source for the logo, the photos, and the opening hours. The logo and the hours are in, the photos are not.
 Last updated: 2026-10-20.
 
 ## 1. Project goals
@@ -37,10 +37,12 @@ All public data gathered on 2026-10-19 from Google Maps, Facebook, Instagram, th
 
 ### Opening hours
 
-- Claim: always open, the shop writes "Sempre aperti".
-- Google and review sites: open 24 hours Monday to Saturday.
-- Sunday differs by source: one says 06:00 to 14:30, another says all day.
-- To confirm with the owner before launch.
+- Confirmed by the owner on 2026-10-20, read from the opening hours highlight on @elfa_bakery_milan.
+- Sunday 05:30 to 21:00.
+- Monday to Saturday open 24 hours, the shop does not close.
+- Older public sources disagree and are now out of date: Google and review sites said 24 hours Monday to Saturday, Sunday was listed as 06:00 to 14:30, 00:00 to 15:00, or all day, and posts from before the August 2026 reopening said Aperti H24 every day.
+- Written into db/seed.sql, the JSON-LD in client/src/lib/structuredData.js, and the page copy on Home, Chi siamo, and Contatti.
+- The highlight cannot be read anonymously, highlight stories need a logged in session, so the owner reads the hours in the app and pastes them here.
 
 ### Ratings
 
@@ -107,6 +109,15 @@ Price level: cheap, about 1 to 10 euro per person.
 - Exterior: quiet residential street, small sidewalk seating, chalkboard sign.
 - Overall mood: cozy, warm, unpretentious, family run, modern counter, energy from morning to night.
 
+### Instagram account, asset source
+
+- Account: https://www.instagram.com/elfa_bakery_milan, 959 followers, 68 posts, profile id 61843599001.
+- Bio: Bakery, caffetteria, pasticceria e gastronomia. Via Sardegna 40 Milano.
+- Logo: docs/references/instagram/elfa-bakery-logo.jpg, 1080x1080 JPEG, a croissant drawn as a circle around an EB monogram with Espresso Bar along the lower right. Sampled colors, ground near #1e1a12 and line art near #f2e3c4. The owner confirmed on 2026-10-20 to use it as it is, so the site asset client/src/assets/logo.png was derived from it at 256x256 with the corners rounded and the outside made transparent, and the header shows it at 48 CSS px. A vector original would still be welcome.
+- Photos: exported by hand from the app into docs/references/instagram/, file names listed in the README there.
+- Anonymous access is blocked on every route tried on 2026-10-20: post embeds redirect to a login wall, the profile API answers require_login, the mirrors on imginn, picuki, sotwe, dumpor, and greatfon sit behind Cloudflare or a bot check, and the profile picture is served at 100x100 only because the CDN signs the image transform.
+- Opening hours: kept in the opening hours highlight, which needs a logged in session.
+
 ## 3. Design direction
 
 ### Brand colors, proposal to validate with the owner
@@ -116,6 +127,8 @@ Price level: cheap, about 1 to 10 euro per person.
 - Cream: background.
 - Espresso charcoal: text and footer.
 - Wood tan: secondary surfaces.
+- The logo confirms two of these: its ground is a near black espresso and its line art is a warm cream a little deeper than --color-cream. Worth matching the logo cream when the header sits on the dark mark.
+- The header bar is espresso and the logo ground is a darker espresso, so the rounded corners read as a subtle tile there and show fully on any light surface.
 
 ### Typography, proposal
 
@@ -212,7 +225,10 @@ Price level: cheap, about 1 to 10 euro per person.
 - [x] Rewrite db/seed.sql with the real menu: 12 categories, 69 items, sourced names and descriptions, every price still NULL.
 - [x] Fix the guessed items that Session 1 had put in the seed. Bagel Classico, Insalata Mista, and Insalata con Salmone were not in any source and are gone. Salad and side dish categories are now empty with a TODO instead of holding invented rows.
 - [x] Write docs/owner-intake.md, the single checklist to send to the owner.
-- [ ] Collect from the owner: logo, real photos, exact prices, correct hours, official phone number, legal company data for the privacy policy.
+- [x] Take the logo from the shop Instagram account into docs/references/instagram/. The owner confirmed on 2026-10-20 to use it as it is, only with rounded corners, so client/src/assets/logo.png was derived from the export and the header now shows it.
+- [ ] Export the Instagram photos into docs/references/instagram/ and use them for the gallery, the home hero, and the Open Graph image.
+- [x] Paste the opening hours from the Instagram highlight, then write them into db/seed.sql. Done on 2026-10-20: Sunday 05:30 to 21:00, Monday to Saturday open 24 hours.
+- [ ] Collect from the owner: exact prices, correct hours, official phone number, legal company data for the privacy policy.
 - [ ] Fill in prices in Workbench once the owner confirms them.
 - [ ] Complete the allergen matrix, it is a legal requirement and only 5 items have rows today.
 - [ ] Owner runs schema.sql then seed.sql in Workbench against the real database.
@@ -229,6 +245,7 @@ Blocked items are tracked in docs/owner-intake.md.
 
 - [x] Global CSS tokens: colors, spacing, type scale, radii, shadows.
 - [x] Components: header, footer, hero, menu card, category tabs, gallery grid, contact block, map link.
+- [x] Real logo in the header: client/src/assets/logo.png, rounded corners baked into the file, 48 CSS px, alt text in Italian. scripts/smoke-render.mjs needed image loaders for the asset import.
 
 ### Session 5. Pages and content
 
@@ -252,9 +269,9 @@ Blocked items are tracked in docs/owner-intake.md.
 
 ## 6. Open questions for the owner
 
-1. Official logo file and brand colors.
-2. Real photos of the shop, food, and staff, with permission to use.
-3. Exact opening hours, especially Sunday.
+1. Official logo file and brand colors. Answered on 2026-10-20: use the exported 1080x1080 JPEG as it is, only with rounded corners, and it is live in the header. A vector original and the exact brand colors are still welcome.
+2. Real photos of the shop, food, and staff, with permission to use. Export them from @elfa_bakery_milan into docs/references/instagram/, the README there lists the file names.
+3. Exact opening hours, especially Sunday. Answered on 2026-10-20: Sunday 05:30 to 21:00, Monday to Saturday open 24 hours.
 4. Which phone number is public.
 5. Final menu with prices for each category.
 6. Is the halal claim official and can it be stated on the site.
@@ -266,6 +283,7 @@ Blocked items are tracked in docs/owner-intake.md.
 - docs/menu-price-research.md: every public menu item and price found, with the source for each block. Research only, no price from it is allowed in db/seed.sql until the owner confirms it.
 - docs/owner-intake.md: the checklist of everything only the owner can answer. Send this, then paste the answers back.
 - docs/references/ holds photos downloaded from public listings for internal design study only. These images are watermarked by third party sites and must not ship in the final website.
+- docs/references/instagram/ holds the logo and the photo exports from the shop Instagram account, with the README listing what is still missing.
 - Digital menu catalog: https://elfabakerymenu.qromo.it/ (returns "Unavailable" as of 2026-10-19)
 - Glovo store page: https://glovoapp.com/it/it/milano/stores/elfa-bakery-mil
 - Sluurpy listing: https://www.sluurpy.it/milano/ristorante/10301158/elfa-bakery
