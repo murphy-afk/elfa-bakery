@@ -2,7 +2,7 @@
 
 Project to design and build a new website for Elfa Bakery, a bakery, coffee shop, pastry shop, and deli in Milan, Italy.
 
-Status: session 5, Italian pages and per page SEO are done. API tests and the English copy are still open.
+Status: API tests are in, sessions 0 to 4 are complete apart from the owner run of the SQL scripts. Session 5 leftovers: English copy, Open Graph image, prerender.
 Last updated: 2026-10-20.
 
 ## 1. Project goals
@@ -223,7 +223,7 @@ Blocked items are tracked in docs/owner-intake.md.
 
 - [x] Build the Express endpoints on top of the MySQL schema.
 - [x] Add input validation and error handling on every route.
-- [ ] Add tests for the endpoints.
+- [x] Add tests for the endpoints. 27 tests in server/tests/, run with npm test. The MySQL pool is stubbed, so the suite needs no database.
 
 ### Session 4. Design system
 
