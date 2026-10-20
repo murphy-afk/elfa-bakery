@@ -2,8 +2,8 @@
 
 Project to design and build a new website for Elfa Bakery, a bakery, coffee shop, pastry shop, and deli in Milan, Italy.
 
-Status: session 2 in progress, content and data.
-Last updated: 2026-10-19.
+Status: session 5, Italian pages and per page SEO are done. API tests and the English copy are still open.
+Last updated: 2026-10-20.
 
 ## 1. Project goals
 
@@ -221,18 +221,23 @@ Blocked items are tracked in docs/owner-intake.md.
 
 ### Session 3. API
 
-- Build the Express endpoints on top of the MySQL schema.
-- Add validation, error handling, and tests.
+- [x] Build the Express endpoints on top of the MySQL schema.
+- [x] Add input validation and error handling on every route.
+- [ ] Add tests for the endpoints.
 
 ### Session 4. Design system
 
-- Global CSS tokens: colors, spacing, type scale, radii, shadows.
-- Components: header, footer, hero, menu card, category tabs, gallery grid, contact block, map block.
+- [x] Global CSS tokens: colors, spacing, type scale, radii, shadows.
+- [x] Components: header, footer, hero, menu card, category tabs, gallery grid, contact block, map link.
 
 ### Session 5. Pages and content
 
-- Build all pages in React with Italian copy first, then English.
-- Add structured data and meta tags per page.
+- [x] Build every page in React with Italian copy: Home, Menu, Chi siamo, Galleria, Contatti, Privacy policy, Cookie policy, and the 404 page.
+- [x] Add per page title, meta description, canonical URL, Open Graph tags, and JSON-LD through client/src/lib/usePageMeta.js.
+- [x] Add the bakery JSON-LD block with address, geo, hours, and social profiles in client/src/lib/structuredData.js.
+- [ ] Write the English versions of the pages and add hreflang. Italian only for now.
+- [ ] Add an Open Graph image once the owner sends real photos.
+- [ ] Render the tags in the initial HTML with a prerender step, currently they are injected on load.
 
 ### Session 6. SEO and performance
 
