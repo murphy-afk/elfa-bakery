@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import { site } from '../lib/site.js'
 
 export default function SiteFooter() {
@@ -47,6 +49,17 @@ export default function SiteFooter() {
               <li>Bakery, caffetteria, pasticceria e gastronomia</li>
               <li>Pizza al trancio, kebab, falafel e dolci</li>
               <li>Opzioni halal</li>
+            </ul>
+          </div>
+          <div>
+            <h2 className="site-footer-title">Legale</h2>
+            <ul className="info-list">
+              <li>
+                <Link to="/privacy-policy">Informativa sulla privacy</Link>
+              </li>
+              <li>
+                <Link to="/cookie-policy">Cookie policy</Link>
+              </li>
             </ul>
           </div>
         </div>

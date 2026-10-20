@@ -4,7 +4,10 @@ import { site } from '../lib/site.js'
 
 const links = [
   { to: '/', label: 'Home', end: true },
-  { to: '/menu', label: 'Menu', end: false }
+  { to: '/chi-siamo', label: 'Chi siamo', end: false },
+  { to: '/menu', label: 'Menu', end: false },
+  { to: '/galleria', label: 'Galleria', end: false },
+  { to: '/contatti', label: 'Contatti', end: false }
 ]
 
 export default function SiteNav() {
