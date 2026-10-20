@@ -15,11 +15,18 @@
   --color-wood-dark: #a87f52;
   --color-white: #ffffff;
 
+  /* Surfaces */
+  --color-surface: var(--color-white);
+  --color-surface-sunken: var(--color-cream-dark);
+  --color-border: #e3d6bd;
+  --color-border-strong: var(--color-wood);
+
   /* Text */
   --text-body: var(--color-espresso);
   --text-muted: var(--color-espresso-soft);
   --text-on-dark: var(--color-cream);
   --text-on-red: var(--color-white);
+  --text-on-amber: var(--color-espresso);
 
   /* Font */
   --font-heading: Georgia, 'Times New Roman', serif;
@@ -46,7 +53,13 @@
 
   /* Layout */
   --max-width: 72rem;
+  --measure: 40rem;
   --gutter: var(--space-lg);
+  --header-height: 4.5rem;
+
+  /* Border and focus */
+  --border-thin: 1px solid var(--color-border);
+  --focus-ring: 0 0 0 3px rgba(232, 163, 61, 0.55);
 
   /* Shape */
   --radius-sm: 0.375rem;
