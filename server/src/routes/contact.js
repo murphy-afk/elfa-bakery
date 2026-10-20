@@ -11,7 +11,7 @@ router.post('/', (req, res) => {
   const errors = []
 
   if (!name || String(name).trim().length === 0) {
-    errors.push({ field: 'name', message: 'Il nome e obbligatorio' })
+    errors.push({ field: 'name', message: 'Il nome è obbligatorio' })
   }
 
   if (!email || !EMAIL_PATTERN.test(String(email))) {
