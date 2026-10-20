@@ -9,7 +9,7 @@ export default function Contact() {
   usePageMeta({
     title: 'Contatti',
     description:
-      'Indirizzo, orari, telefoni e social di Elfa Bakery, Via Sardegna 40, 20146 Milano. Aperti 24 ore dal lunedì al sabato.',
+      'Indirizzo, orari, telefoni e social di Elfa Bakery, Via Sardegna 40, 20146 Milano. Aperti 24 ore dal lunedì al sabato, domenica dalle 5:30 alle 21.',
     path: '/contatti'
   })
 
@@ -44,8 +44,8 @@ export default function Contact() {
             <h2 className="contact-panel-title">Orari di apertura</h2>
             <HoursPanel />
             <p className="contact-note">
-              Di domenica l’orario cambia ed è ancora da confermare. Chiama
-              prima di venire se hai bisogno di un orario preciso.
+              Di domenica chiudiamo alle 21 e riapriamo alle 5:30. Dal lunedì al
+              sabato il negozio non chiude mai.
             </p>
           </div>
 

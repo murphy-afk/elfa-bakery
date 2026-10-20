@@ -65,8 +65,8 @@ export default function SiteFooter() {
         </div>
 
         <p className="site-footer-note">
-          Prezzi e orari sono ancora in fase di conferma con il titolare. Chiama
-          prima di venire se hai bisogno di un orario preciso.
+          I prezzi sono ancora in fase di conferma con il titolare. Per il
+          listino aggiornato chiedi direttamente al negozio.
         </p>
       </div>
     </footer>

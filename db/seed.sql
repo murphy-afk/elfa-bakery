@@ -190,15 +190,14 @@ INSERT INTO item_allergens (item_id, allergen_id) VALUES
 
 -- ------------------------------------------------------------
 -- Opening hours.
--- Sources conflict badly, see docs/menu-price-research.md.
--- The shop says H24 Monday to Saturday, Sluurpy agrees.
--- Sluurpy gives Sunday 00:00 to 15:00, another source gave
--- 06:00 to 14:30, and the shop itself says "Sempre aperti".
--- In summer 2026 the shop opened 06:00 to 21:00.
--- TODO: owner confirms Sunday and the winter schedule.
+-- Confirmed by the owner on 2026-10-20, read from the opening
+-- hours highlight on the shop Instagram account.
+-- Sunday 05:30 to 21:00, every other day open 24 hours.
+-- Older public sources still say H24 every day, or Sunday 00:00
+-- to 15:00, or Sunday 06:00 to 14:30. Those are out of date.
 -- ------------------------------------------------------------
 INSERT INTO opening_hours (id, day_index, day_name_it, day_name_en, opens, closes, is_open_all_day, is_closed, note) VALUES
-  (1, 0, 'Domenica',   'Sunday',    '00:00:00', '15:00:00', 0, 0, 'Orario da confermare'),
+  (1, 0, 'Domenica',   'Sunday',    '05:30:00', '21:00:00', 0, 0, NULL),
   (2, 1, 'Lunedi',     'Monday',    NULL,       NULL,       1, 0, NULL),
   (3, 2, 'Martedi',    'Tuesday',   NULL,       NULL,       1, 0, NULL),
   (4, 3, 'Mercoledi',  'Wednesday', NULL,       NULL,       1, 0, NULL),

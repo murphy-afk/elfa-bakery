@@ -98,11 +98,11 @@ describe('GET /api/hours', () => {
         day_index: 0,
         day_name_it: 'Domenica',
         day_name_en: 'Sunday',
-        opens: '00:00:00',
-        closes: '15:00:00',
+        opens: '05:30:00',
+        closes: '21:00:00',
         is_open_all_day: 0,
         is_closed: 0,
-        note: 'Orario da confermare'
+        note: null
       },
       {
         day_index: 1,
@@ -123,7 +123,9 @@ describe('GET /api/hours', () => {
     const { status, body } = await request(ctx.base, '/api/hours')
     assert.equal(status, 200)
     assert.equal(body[0].day_name_it, 'Domenica')
-    assert.equal(body[0].note, 'Orario da confermare')
+    assert.equal(body[0].opens, '05:30:00')
+    assert.equal(body[0].closes, '21:00:00')
+    assert.equal(body[0].note, null)
     assert.equal(body[1].is_open_all_day, 1)
     assert.equal(body[1].opens, null)
   })

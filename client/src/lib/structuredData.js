@@ -3,8 +3,8 @@
 
 import { site } from './site.js'
 
-// TODO: confirm the Sunday schedule and the winter schedule with the
-// owner, then mirror the fix in db/seed.sql and here.
+// Hours mirror db/seed.sql, confirmed by the owner on 2026-10-20.
+// Sunday 05:30 to 21:00, Monday to Saturday open all day.
 const OPEN_ALL_DAY = {
   '@type': 'OpeningHoursSpecification',
   dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -15,8 +15,8 @@ const OPEN_ALL_DAY = {
 const SUNDAY = {
   '@type': 'OpeningHoursSpecification',
   dayOfWeek: 'Sunday',
-  opens: '00:00',
-  closes: '15:00'
+  opens: '05:30',
+  closes: '21:00'
 }
 
 // TODO: add aggregateRating only after the owner picks which rating to

@@ -15,7 +15,7 @@ import LoadErrorNote from '../components/LoadErrorNote.jsx'
 const highlights = [
   {
     title: 'Sempre aperti',
-    text: "Aperti 24 ore dal lunedì al sabato. Di domenica l'orario cambia, chiama prima di venire."
+    text: 'Aperti 24 ore dal lunedì al sabato. Di domenica dalle 5:30 alle 21.'
   },
   {
     title: 'Opzioni halal',
@@ -38,7 +38,7 @@ export default function Home() {
 
   usePageMeta({
     description:
-      'Elfa Bakery a Milano, in Via Sardegna 40. Bakery, caffetteria, pasticceria e gastronomia. Bagel, pizza, piadine, kebab e dolci. Sempre aperti.',
+      'Elfa Bakery a Milano, in Via Sardegna 40. Bakery, caffetteria, pasticceria e gastronomia. Bagel, pizza, piadine, kebab e dolci. Aperti H24 dal lunedì al sabato.',
     path: '/',
     jsonLd: bakeryJsonLd
   })

@@ -143,15 +143,13 @@ These come from the shop's Facebook wording, so they are safe to use, but they a
 
 ## Hours research
 
-Conflicting, needs the owner.
+Resolved on 2026-10-20. The owner read the opening hours highlight on the shop Instagram account: Sunday 05:30 to 21:00, Monday to Saturday open 24 hours. Written into db/seed.sql. Everything below is what the public sources said before that, kept for the record only.
 
 - Shop posts say "Sempre aperti" and "Aperti H24" repeatedly through 2026.
 - Summer 2026: reduced hours 06:00 to 21:00, with a post saying H24 would resume on 01/09/2026.
 - Post of 30/08/2026 says the shop reopens on 31/08/2026 from 06:00 to 22:00. That contradicts the H24 resumption on the same date.
 - Sluurpy: Monday to Saturday 24 hours, Sunday 00:00 to 15:00.
 - Session 0 captured a source saying Sunday 06:00 to 14:30.
-
-Sunday and the current winter schedule are both open questions.
 
 ## Other findings worth keeping
 

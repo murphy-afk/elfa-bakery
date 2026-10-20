@@ -18,7 +18,7 @@ const shopPoints = [
   },
   {
     title: 'Dal mattino a notte',
-    text: 'Aperti 24 ore dal lunedì al sabato secondo le fonti pubbliche. Di domenica l’orario cambia, chiama prima di venire.'
+    text: 'Aperti 24 ore dal lunedì al sabato, e dalle 5:30 alle 21 di domenica.'
   }
 ]
 
@@ -45,7 +45,7 @@ export default function About() {
   usePageMeta({
     title: 'Chi siamo',
     description:
-      'Elfa Bakery è un negozio di famiglia in Via Sardegna 40, Milano: bakery, caffetteria, pasticceria e gastronomia con opzioni halal, aperto sempre.',
+      'Elfa Bakery è un negozio di famiglia in Via Sardegna 40, Milano: bakery, caffetteria, pasticceria e gastronomia con opzioni halal, aperti 24 ore.',
     path: '/chi-siamo'
   })
 
