@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom'
 
-import usePageTitle from '../lib/usePageTitle.js'
+import usePageMeta from '../lib/usePageMeta.js'
 
 export default function NotFound() {
-  usePageTitle('Pagina non trovata')
+  usePageMeta({
+    title: 'Pagina non trovata',
+    description: 'La pagina che cerchi su elfabakery.it non esiste.',
+    noindex: true
+  })
 
   return (
     <section className="container not-found">

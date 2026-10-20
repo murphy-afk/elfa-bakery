@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { getJSON } from '../lib/api.js'
-import usePageTitle from '../lib/usePageTitle.js'
+import usePageMeta from '../lib/usePageMeta.js'
 import MenuCategoryNav from '../components/MenuCategoryNav.jsx'
 import MenuItemCard from '../components/MenuItemCard.jsx'
 import LoadingNote from '../components/LoadingNote.jsx'
@@ -17,7 +17,12 @@ export default function Menu() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
-  usePageTitle('Il menu')
+  usePageMeta({
+    title: 'Il menu',
+    description:
+      'Il menu di Elfa Bakery: pizza al trancio, bagel, panini, piadine, kebab, focacce e pasticceria in Via Sardegna 40, Milano. Piatti e allergeni.',
+    path: '/menu'
+  })
 
   useEffect(() => {
     let active = true

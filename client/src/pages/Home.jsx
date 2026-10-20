@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 
 import { getJSON } from '../lib/api.js'
 import { site } from '../lib/site.js'
-import usePageTitle from '../lib/usePageTitle.js'
+import usePageMeta from '../lib/usePageMeta.js'
+import { bakeryJsonLd } from '../lib/structuredData.js'
 import SectionHeading from '../components/SectionHeading.jsx'
 import PlaceholderImage from '../components/PlaceholderImage.jsx'
 import PriceTag from '../components/PriceTag.jsx'
@@ -35,7 +36,12 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
-  usePageTitle()
+  usePageMeta({
+    description:
+      'Elfa Bakery a Milano, in Via Sardegna 40. Bakery, caffetteria, pasticceria e gastronomia. Bagel, pizza, piadine, kebab e dolci. Sempre aperti.',
+    path: '/',
+    jsonLd: bakeryJsonLd
+  })
 
   useEffect(() => {
     let active = true
