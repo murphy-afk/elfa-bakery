@@ -33,6 +33,15 @@ await build({
   platform: 'node',
   jsx: 'automatic',
   external: ['react', 'react-dom', 'react-router-dom'],
+  // Assets are inlined so the smoke test needs no output directory and
+  // no extra files on disk. Vite does its own handling for the real build.
+  loader: {
+    '.png': 'dataurl',
+    '.jpg': 'dataurl',
+    '.jpeg': 'dataurl',
+    '.webp': 'dataurl',
+    '.svg': 'dataurl'
+  },
   define: { 'import.meta.env': '{}' },
   outfile: outFile,
   logLevel: 'error'
