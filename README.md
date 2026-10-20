@@ -43,10 +43,15 @@ This starts the client on http://localhost:5173 and the API on http://localhost:
 
 ```bash
 npm run lint
+npm test
 npm run check:rules
+npm run check:render
 ```
 
-check:rules enforces the mandatory writing rules: no em dashes, no emojis, no lines that only contain > or />.
+- lint: ESLint for the client and the server.
+- test: the API tests in server/tests with the Node test runner. They stub the MySQL pool, so no database is needed.
+- check:rules: enforces the mandatory writing rules, no em dashes, no emojis, no lines that only contain > or />.
+- check:render: renders every route with react-dom/server and checks there is exactly one h1 per page.
 
 ## Project layout
 
@@ -54,4 +59,4 @@ check:rules enforces the mandatory writing rules: no em dashes, no emojis, no li
 - server: Express API.
 - db: schema.sql and seed.sql for MySQL Workbench.
 - docs/references: shop photos for internal design study only.
-- scripts: rule checker.
+- scripts: rule checker and route render smoke test.
