@@ -18,13 +18,15 @@
 USE elfa_bakery;
 
 -- Clear existing content, children first.
-DELETE FROM item_allergens;
-DELETE FROM items;
-DELETE FROM categories;
-DELETE FROM allergens;
-DELETE FROM opening_hours;
-DELETE FROM settings;
-DELETE FROM gallery;
+-- Every DELETE matches on a key column, because MySQL Workbench
+-- safe update mode refuses a DELETE without one, error 1175.
+DELETE FROM item_allergens WHERE item_id > 0;
+DELETE FROM items WHERE id > 0;
+DELETE FROM categories WHERE id > 0;
+DELETE FROM allergens WHERE id > 0;
+DELETE FROM opening_hours WHERE id > 0;
+DELETE FROM settings WHERE setting_key <> '';
+DELETE FROM gallery WHERE id > 0;
 
 -- ------------------------------------------------------------
 -- Categories.
