@@ -198,11 +198,11 @@ INSERT INTO item_allergens (item_id, allergen_id) VALUES
 -- ------------------------------------------------------------
 INSERT INTO opening_hours (id, day_index, day_name_it, day_name_en, opens, closes, is_open_all_day, is_closed, note) VALUES
   (1, 0, 'Domenica',   'Sunday',    '05:30:00', '21:00:00', 0, 0, NULL),
-  (2, 1, 'Lunedi',     'Monday',    NULL,       NULL,       1, 0, NULL),
-  (3, 2, 'Martedi',    'Tuesday',   NULL,       NULL,       1, 0, NULL),
-  (4, 3, 'Mercoledi',  'Wednesday', NULL,       NULL,       1, 0, NULL),
-  (5, 4, 'Giovedi',    'Thursday',  NULL,       NULL,       1, 0, NULL),
-  (6, 5, 'Venerdi',    'Friday',    NULL,       NULL,       1, 0, NULL),
+  (2, 1, 'Lunedì',     'Monday',    NULL,       NULL,       1, 0, NULL),
+  (3, 2, 'Martedì',    'Tuesday',   NULL,       NULL,       1, 0, NULL),
+  (4, 3, 'Mercoledì',  'Wednesday', NULL,       NULL,       1, 0, NULL),
+  (5, 4, 'Giovedì',    'Thursday',  NULL,       NULL,       1, 0, NULL),
+  (6, 5, 'Venerdì',    'Friday',    NULL,       NULL,       1, 0, NULL),
   (7, 6, 'Sabato',     'Saturday',  NULL,       NULL,       1, 0, NULL);
 
 -- ------------------------------------------------------------

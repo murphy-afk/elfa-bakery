@@ -106,7 +106,7 @@ describe('GET /api/hours', () => {
       },
       {
         day_index: 1,
-        day_name_it: 'Lunedi',
+        day_name_it: 'Lunedì',
         day_name_en: 'Monday',
         opens: null,
         closes: null,

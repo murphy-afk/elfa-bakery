@@ -43,10 +43,6 @@ export default function Contact() {
           <div className="contact-panel">
             <h2 className="contact-panel-title">Orari di apertura</h2>
             <HoursPanel />
-            <p className="contact-note">
-              Di domenica chiudiamo alle 21 e riapriamo alle 5:30. Dal lunedì al
-              sabato il negozio non chiude mai.
-            </p>
           </div>
 
           <div className="contact-panel">
