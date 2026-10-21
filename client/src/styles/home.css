@@ -67,10 +67,12 @@
     font-size: var(--text-4xl);
   }
 
-  /* On desktop the figure sits beside the copy, so a taller crop keeps
-     the panini row in frame without pushing the buttons off screen. */
+  /* The photo must not outweigh the shop name, so on desktop it stops at
+     28 rem wide and keeps the 4/3 crop instead of growing into a tall
+     panel beside the copy. */
   .home-hero-figure {
-    aspect-ratio: 3 / 4;
+    max-width: 28rem;
+    justify-self: end;
   }
 }
 
