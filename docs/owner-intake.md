@@ -27,7 +27,8 @@ Allergen data is a legal requirement in Italy. The seed only marks allergens tha
 
 The current schedule lives in the opening hours highlight on https://www.instagram.com/elfa_bakery_milan/. Anonymous access cannot reach it: highlight stories need a logged in Instagram session, and search captions mix Elfa posts with other accounts, so they cannot be trusted.
 
-- [x] Hours pasted on 2026-10-20: Sunday 05:30 to 21:00, Monday to Saturday open 24 hours. Written into db/seed.sql, the JSON-LD block, and the page copy. Nothing left as a TODO for hours.
+- [x] Hours pasted on 2026-10-20: Sunday 05:30 to 21:00, Monday to Saturday open 24 hours. Written into db/seed.sql, the JSON-LD block, the schedule list in client/src/lib/hours.js, and the page copy. Nothing left as a TODO for hours.
+- [ ] Run db/fix-opening-hours.sql in MySQL Workbench if the table still shows Sunday 00:00 to 15:00 with the note "Orario da confermare". That is the placeholder from the first seed. The script replaces it with the confirmed schedule and runs with safe update mode on, no settings to change.
 - [ ] Confirm whether the summer reduced schedule repeats in 2027.
 - [ ] Confirm which phone number is the public one, +39 327 371 8769 or +39 02 3659 8767.
 

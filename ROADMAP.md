@@ -2,8 +2,8 @@
 
 Project to design and build a new website for Elfa Bakery, a bakery, coffee shop, pastry shop, and deli in Milan, Italy.
 
-Status: API tests are in, sessions 0 to 4 are complete apart from the owner run of the SQL scripts. Session 5 leftovers: English copy, prerender. Instagram is the source for the logo, the photos, and the opening hours. All three are in: the logo is in the header, the 26 photos feed the gallery and the home hero, and the Open Graph image is set.
-Last updated: 2026-10-20.
+Status: API tests are in, sessions 0 to 4 are complete apart from the owner run of the SQL scripts. Session 5 leftovers: English copy, prerender. Instagram is the source for the logo, the photos, and the opening hours. All three are in: the logo is in the header, the 26 photos feed the gallery and the home hero, and the Open Graph image is set. The hours panel shows the confirmed schedule grouped by block and marks the current day, navigation scrolls back to the top, and the home hero photo is sized against the shop name.
+Last updated: 2026-10-21.
 
 ## 1. Project goals
 
@@ -41,7 +41,7 @@ All public data gathered on 2026-10-19 from Google Maps, Facebook, Instagram, th
 - Sunday 05:30 to 21:00.
 - Monday to Saturday open 24 hours, the shop does not close.
 - Older public sources disagree and are now out of date: Google and review sites said 24 hours Monday to Saturday, Sunday was listed as 06:00 to 14:30, 00:00 to 15:00, or all day, and posts from before the August 2026 reopening said Aperti H24 every day.
-- Written into db/seed.sql, the JSON-LD in client/src/lib/structuredData.js, and the page copy on Home, Chi siamo, and Contatti.
+- Written into db/seed.sql, the JSON-LD in client/src/lib/structuredData.js, the schedule list in client/src/lib/hours.js, and the page copy on Home, Chi siamo, and Contatti.
 - The highlight cannot be read anonymously, highlight stories need a logged in session, so the owner reads the hours in the app and pastes them here.
 
 ### Ratings
@@ -217,6 +217,7 @@ Price level: cheap, about 1 to 10 euro per person.
 - [x] Initialize git, Node, and the client and server folders.
 - [x] Add linting and formatting with the rules from AGENTS.md.
 - [x] Write db/schema.sql and db/seed.sql for MySQL Workbench.
+- [x] Make the SQL scripts run with safe update mode on 2026-10-21. Workbench refuses a DELETE without a key column in the WHERE clause, error 1175, so every DELETE in db/seed.sql matches on a key. db/fix-opening-hours.sql is the one-off patch for a database seeded before the hours were confirmed.
 - [ ] Owner runs schema.sql then seed.sql in Workbench and fills in the real prices. Moved to Session 2, the prices are still NULL.
 
 ### Session 2. Content and data, in progress
@@ -253,11 +254,15 @@ Blocked items are tracked in docs/owner-intake.md.
 - [x] Add per page title, meta description, canonical URL, Open Graph tags, and JSON-LD through client/src/lib/usePageMeta.js.
 - [x] Add the bakery JSON-LD block with address, geo, hours, and social profiles in client/src/lib/structuredData.js.
 - [ ] Write the English versions of the pages and add hreflang. Italian only for now.
+- [x] Fix the opening hours panel on 2026-10-21. It now groups days that share a schedule, so the week reads Lunedì - Sabato, Aperto 24 ore and Domenica, 05:30 - 21:00, marks the current day with an "oggi" chip, and it renders the confirmed list in client/src/lib/hours.js instead of GET /api/hours, because a database seeded before 2026-10-20 still answers the placeholder Sunday 00:00 to 15:00 with the note "Orario da confermare". The day names in db/seed.sql regained their accents, Lunedì through Venerdì.
+- [x] Scroll back to the top on navigation on 2026-10-21, client/src/components/ScrollToTop.jsx resets the scroll position on every path change.
+- [x] Size the home hero photo against the shop name on 2026-10-21: on desktop it is capped at 28 rem wide with a 4/3 crop instead of the tall 3/4 panel, so the copy and the photo carry the same weight.
 - [x] Add an Open Graph image once the owner sends real photos. Done on 2026-10-20: og-elfa-bakery.jpg, a 1200x630 crop of the night shop front, declared in client/index.html and re-declared on every route by usePageMeta.js. Same image in the bakery JSON-LD.
 - [ ] Render the tags in the initial HTML with a prerender step, currently they are injected on load.
 
 ### Session 6. SEO and performance
 
+- Wire the hours panel back to GET /api/hours once the launch database is seeded. It renders client/src/lib/hours.js until then, so a database holding the placeholder rows cannot override hours the owner confirmed.
 - Sitemap, robots, redirects if the old site had URLs, analytics.
 - Image pipeline, caching headers, compression, lazy loading. The 26 photos in client/public/photos/ were resized by hand as a stop gap: 720 px long edge at JPEG quality 74, hero 1025 px, Open Graph 1200x630. This session replaces them with a real build step: responsive sizes, WebP or AVIF, and a check that the output matches the inventory in client/src/lib/photos.js.
 
