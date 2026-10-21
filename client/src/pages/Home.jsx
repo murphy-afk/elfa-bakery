@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom'
 import { getJSON } from '../lib/api.js'
 import { site } from '../lib/site.js'
 import usePageMeta from '../lib/usePageMeta.js'
-import { bakeryJsonLd } from '../lib/structuredData.js'
-import { heroPhoto, photoForItem } from '../lib/photos.js'
+import { bakeryJsonLd, bakeryJsonLdEn } from '../lib/structuredData.js'
+import { heroPhoto, photoForItem, photoAlt } from '../lib/photos.js'
+import { useLocale, localisedPath } from '../lib/i18n.js'
 import SectionHeading from '../components/SectionHeading.jsx'
 import PlaceholderImage from '../components/PlaceholderImage.jsx'
 import PriceTag from '../components/PriceTag.jsx'
@@ -13,35 +14,118 @@ import HoursPanel from '../components/HoursPanel.jsx'
 import LoadingNote from '../components/LoadingNote.jsx'
 import LoadErrorNote from '../components/LoadErrorNote.jsx'
 
-const highlights = [
-  {
-    title: 'Sempre aperti',
-    text: 'Aperti 24 ore dal lunedì al sabato. Di domenica dalle 5:30 alle 21.'
+// Italian is the default language of the site, English is the second
+// one. Each page keeps both sets of strings next to the markup.
+const COPY = {
+  it: {
+    metaDescription:
+      'Elfa Bakery a Milano, in Via Sardegna 40. Bakery, caffetteria, pasticceria e gastronomia. Bagel, pizza, piadine, kebab e dolci. Aperti H24 dal lunedì al sabato.',
+    tagline:
+      'Bakery, caffetteria, pasticceria e gastronomia in Via Sardegna 40, Milano. Pizza al trancio, bagel, kebab e dolci, dal mattino a notte fonda.',
+    seeMenu: 'Vedi tutto il menu',
+    call: 'Chiama',
+    featured: {
+      eyebrow: 'I più amati',
+      title: 'Cosa consigliano i nostri clienti',
+      lede: 'Piatti e dolci che tornano sempre nelle recensioni. I prezzi arrivano appena il titolare conferma il listino.'
+    },
+    featuredError: 'Non riusciamo a caricare i piatti in evidenza.',
+    featuredEmpty: 'I piatti in evidenza arrivano a breve. Intanto guarda tutto il menu.',
+    photoLabel: 'Foto in arrivo',
+    photoAlt: (name) => `Spazio riservato alla fotografia di ${name}`,
+    highlights: [
+      {
+        title: 'Sempre aperti',
+        text: 'Aperti 24 ore dal lunedì al sabato. Di domenica dalle 5:30 alle 21.'
+      },
+      {
+        title: 'Opzioni halal',
+        text: 'Kebab, falafel e piatti preparati con opzioni halal. Chiedi al banco.'
+      },
+      {
+        title: 'Banco di pasticceria',
+        text: 'Brioches, croissant, biscotti e torte ogni giorno, insieme alle focacce.'
+      },
+      {
+        title: 'Gastronomia calda',
+        text: 'Lasagne, omelette e piatti pronti preparati al mattino per un pranzo veloce.'
+      }
+    ],
+    shop: {
+      eyebrow: 'Il negozio',
+      title: 'Bakery, caffetteria e gastronomia sotto lo stesso tetto'
+    },
+    visit: {
+      eyebrow: 'Vieni a trovarci',
+      title: 'Via Sardegna 40, Milano',
+      lede: 'Nella zona De Angeli, vicino alla chiesa greco ortodossa. Posti seduti dentro e fuori, servizio al banco e asporto.'
+    },
+    hoursTitle: 'Orari di apertura',
+    contactTitle: 'Contatti',
+    mapsLink: 'Apri la posizione su Google Maps',
+    menuLink: 'Guarda il menu'
   },
-  {
-    title: 'Opzioni halal',
-    text: 'Kebab, falafel e piatti preparati con opzioni halal. Chiedi al banco.'
-  },
-  {
-    title: 'Banco di pasticceria',
-    text: 'Brioches, croissant, biscotti e torte ogni giorno, insieme alle focacce.'
-  },
-  {
-    title: 'Gastronomia calda',
-    text: 'Lasagne, omelette e piatti pronti preparati al mattino per un pranzo veloce.'
+  en: {
+    metaDescription:
+      'Elfa Bakery in Milan, at Via Sardegna 40. Bakery, coffee shop, pastry counter and deli. Bagels, pizza, piadinas, kebab and sweets. Open 24 hours Monday to Saturday.',
+    tagline:
+      'Bakery, coffee shop, pastry counter and deli in Via Sardegna 40, Milan. Pizza by the slice, bagels, kebab and sweets, from morning until late at night.',
+    seeMenu: 'See the whole menu',
+    call: 'Call',
+    featured: {
+      eyebrow: 'Customer favourites',
+      title: 'What our customers keep recommending',
+      lede: 'The dishes and sweets that keep coming back in the reviews. Prices go online as soon as the owner confirms the price list.'
+    },
+    featuredError: 'We could not load the featured dishes.',
+    featuredEmpty: 'The featured dishes are coming soon. In the meantime, look at the whole menu.',
+    photoLabel: 'Photo on its way',
+    photoAlt: (name) => `Space reserved for the photograph of ${name}`,
+    highlights: [
+      {
+        title: 'Open around the clock',
+        text: 'Open 24 hours from Monday to Saturday, and from 5:30 to 21:00 on Sunday.'
+      },
+      {
+        title: 'Halal options',
+        text: 'Kebab, falafel and dishes prepared with halal options. Ask at the counter.'
+      },
+      {
+        title: 'The pastry counter',
+        text: 'Brioches, croissants, biscuits and cakes every day, next to the focaccia.'
+      },
+      {
+        title: 'Hot deli dishes',
+        text: 'Lasagne, omelettes and ready dishes prepared in the morning for a quick lunch.'
+      }
+    ],
+    shop: {
+      eyebrow: 'The shop',
+      title: 'Bakery, coffee shop and deli under one roof'
+    },
+    visit: {
+      eyebrow: 'Come and see us',
+      title: 'Via Sardegna 40, Milan',
+      lede: 'In the De Angeli area, right by the Greek Orthodox church. Seats inside and outside, counter service and takeaway.'
+    },
+    hoursTitle: 'Opening hours',
+    contactTitle: 'Contact us',
+    mapsLink: 'Open the location on Google Maps',
+    menuLink: 'Look at the menu'
   }
-]
+}
 
 export default function Home() {
+  const locale = useLocale()
+  const copy = COPY[locale] ?? COPY.it
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
   usePageMeta({
-    description:
-      'Elfa Bakery a Milano, in Via Sardegna 40. Bakery, caffetteria, pasticceria e gastronomia. Bagel, pizza, piadine, kebab e dolci. Aperti H24 dal lunedì al sabato.',
+    description: copy.metaDescription,
     path: '/',
-    jsonLd: bakeryJsonLd
+    jsonLd: locale === 'en' ? bakeryJsonLdEn : bakeryJsonLd
   })
 
   useEffect(() => {
@@ -77,17 +161,13 @@ export default function Home() {
         <div className="home-hero-copy">
           <span className="home-hero-kicker">{site.addressFull}</span>
           <h1 id="titolo-pagina">{site.name}</h1>
-          <p className="home-tagline">
-            Bakery, caffetteria, pasticceria e gastronomia in Via Sardegna 40,
-            Milano. Pizza al trancio, bagel, kebab e dolci, dal mattino a notte
-            fonda.
-          </p>
+          <p className="home-tagline">{copy.tagline}</p>
           <div className="btn-row home-hero-actions">
-            <Link className="btn btn-primary" to="/menu">
-              Vedi tutto il menu
+            <Link className="btn btn-primary" to={localisedPath('/menu', locale)}>
+              {copy.seeMenu}
             </Link>
             <a className="btn btn-secondary" href={`tel:${site.phonePrimaryHref}`}>
-              Chiama {site.phonePrimary}
+              {copy.call} {site.phonePrimary}
             </a>
           </div>
         </div>
@@ -96,7 +176,7 @@ export default function Home() {
           <img
             className="home-hero-photo"
             src={heroPhoto.src}
-            alt={heroPhoto.alt}
+            alt={locale === 'en' ? heroPhoto.alt_en : heroPhoto.alt}
             width={heroPhoto.width}
             height={heroPhoto.height}
             fetchPriority="high" />
@@ -107,25 +187,31 @@ export default function Home() {
         <div className="container">
           <SectionHeading
             id="titolo-scelti"
-            eyebrow="I più amati"
-            title="Cosa consigliano i nostri clienti"
-            lede="Piatti e dolci che tornano sempre nelle recensioni. I prezzi arrivano appena il titolare conferma il listino." />
+            eyebrow={copy.featured.eyebrow}
+            title={copy.featured.title}
+            lede={copy.featured.lede} />
 
           {loading ? <LoadingNote /> : null}
-          {error ? (
-            <LoadErrorNote>Non riusciamo a caricare i piatti in evidenza.</LoadErrorNote>
-          ) : null}
+          {error ? <LoadErrorNote>{copy.featuredError}</LoadErrorNote> : null}
 
           {!loading && !error && featured.length === 0 ? (
-            <p className="status-note">
-              I piatti in evidenza arrivano a breve. Intanto guarda tutto il menu.
-            </p>
+            <p className="status-note">{copy.featuredEmpty}</p>
           ) : null}
 
           {!loading && !error && featured.length > 0 ? (
             <div className="card-grid card-grid-3">
               {featured.map(({ item, category }) => {
                 const photo = photoForItem(item.id)
+                const name =
+                  locale === 'en' ? item.name_en || item.name_it : item.name_it
+                const categoryName =
+                  locale === 'en'
+                    ? category.name_en || category.name_it
+                    : category.name_it
+                const description =
+                  locale === 'en'
+                    ? item.description_en || item.description_it
+                    : item.description_it
 
                 return (
                   <article className="card" key={item.id}>
@@ -133,21 +219,19 @@ export default function Home() {
                       <img
                         className="card-photo"
                         src={photo.image_url}
-                        alt={photo.alt_it}
+                        alt={photoAlt(photo, locale)}
                         loading="lazy"
                         decoding="async" />
                     ) : (
                       <PlaceholderImage
-                        label="Foto in arrivo"
-                        alt={`Spazio riservato alla fotografia di ${item.name_it}`} />
+                        label={copy.photoLabel}
+                        alt={copy.photoAlt(name)} />
                     )}
                     <div className="card-body">
-                      <h3 className="card-title">{item.name_it}</h3>
-                      {item.description_it ? (
-                        <p className="card-text">{item.description_it}</p>
-                      ) : null}
+                      <h3 className="card-title">{name}</h3>
+                      {description ? <p className="card-text">{description}</p> : null}
                       <div className="card-footer">
-                        <span className="card-text">{category.name_it}</span>
+                        <span className="card-text">{categoryName}</span>
                         <PriceTag price={item.price} />
                       </div>
                     </div>
@@ -163,10 +247,10 @@ export default function Home() {
         <div className="container">
           <SectionHeading
             id="titolo-punti"
-            eyebrow="Il negozio"
-            title="Bakery, caffetteria e gastronomia sotto lo stesso tetto" />
+            eyebrow={copy.shop.eyebrow}
+            title={copy.shop.title} />
           <ul className="highlight-list">
-            {highlights.map((highlight) => (
+            {copy.highlights.map((highlight) => (
               <li className="highlight-item" key={highlight.title}>
                 <h3 className="highlight-title">{highlight.title}</h3>
                 <p className="highlight-text">{highlight.text}</p>
@@ -180,18 +264,18 @@ export default function Home() {
         <div className="container">
           <SectionHeading
             id="titolo-visita"
-            eyebrow="Vieni a trovarci"
-            title="Via Sardegna 40, Milano"
-            lede="Nella zona De Angeli, vicino alla chiesa greco ortodossa. Posti seduti dentro e fuori, servizio al banco e asporto." />
+            eyebrow={copy.visit.eyebrow}
+            title={copy.visit.title}
+            lede={copy.visit.lede} />
 
           <div className="home-visit">
             <div className="home-visit-panel">
-              <h3 className="home-visit-title">Orari di apertura</h3>
+              <h3 className="home-visit-title">{copy.hoursTitle}</h3>
               <HoursPanel />
             </div>
 
             <div className="home-visit-panel">
-              <h3 className="home-visit-title">Contatti</h3>
+              <h3 className="home-visit-title">{copy.contactTitle}</h3>
               <ul className="info-list">
                 <li>{site.addressFull}</li>
                 <li>
@@ -203,10 +287,10 @@ export default function Home() {
               </ul>
               <div className="btn-row home-visit-actions">
                 <a className="btn btn-primary" href={site.mapsUrl}>
-                  Apri la posizione su Google Maps
+                  {copy.mapsLink}
                 </a>
-                <Link className="btn btn-secondary" to="/menu">
-                  Guarda il menu
+                <Link className="btn btn-secondary" to={localisedPath('/menu', locale)}>
+                  {copy.menuLink}
                 </Link>
               </div>
             </div>

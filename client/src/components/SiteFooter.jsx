@@ -1,27 +1,84 @@
 import { Link } from 'react-router-dom'
 
 import { site } from '../lib/site.js'
+import { useLocale, localisedPath } from '../lib/i18n.js'
 import SocialIcon from './SocialIcon.jsx'
 
+const COPY = {
+  it: {
+    titles: {
+      where: 'Dove siamo',
+      contact: 'Contatti',
+      social: 'Social',
+      shop: 'Il negozio',
+      legal: 'Legale'
+    },
+    whereItems: [site.addressLine, site.addressCity, 'zona De Angeli, Milano'],
+    mapsLink: 'Apri la posizione su Google Maps',
+    social: [
+      { network: 'instagram', href: site.instagram, label: 'Profilo Instagram di Elfa Bakery' },
+      { network: 'facebook', href: site.facebook, label: 'Pagina Facebook di Elfa Bakery' }
+    ],
+    shopItems: [
+      'Bakery, caffetteria, pasticceria e gastronomia',
+      'Pizza al trancio, kebab, falafel e dolci',
+      'Opzioni halal'
+    ],
+    privacy: 'Informativa sulla privacy',
+    cookies: 'Cookie policy',
+    note:
+      'I prezzi sono ancora in fase di conferma con il titolare. Per il ' +
+      'listino aggiornato chiedi direttamente al negozio.'
+  },
+  en: {
+    titles: {
+      where: 'Where we are',
+      contact: 'Contact',
+      social: 'Social',
+      shop: 'The shop',
+      legal: 'Legal'
+    },
+    whereItems: [site.addressLine, site.addressCity, 'De Angeli area, Milan'],
+    mapsLink: 'Open the location on Google Maps',
+    social: [
+      { network: 'instagram', href: site.instagram, label: 'Elfa Bakery on Instagram' },
+      { network: 'facebook', href: site.facebook, label: 'Elfa Bakery on Facebook' }
+    ],
+    shopItems: [
+      'Bakery, coffee shop, pastry counter and deli',
+      'Pizza by the slice, kebab, falafel and sweets',
+      'Halal options'
+    ],
+    privacy: 'Privacy policy',
+    cookies: 'Cookie policy',
+    note:
+      'Prices are still being confirmed with the owner. For the updated ' +
+      'price list, ask the shop directly.'
+  }
+}
+
 export default function SiteFooter() {
+  const locale = useLocale()
+  const copy = COPY[locale] ?? COPY.it
+
   return (
     <footer className="site-footer">
       <div className="container">
         <div className="site-footer-inner">
           <div>
-            <h2 className="site-footer-title">Dove siamo</h2>
+            <h2 className="site-footer-title">{copy.titles.where}</h2>
             <ul className="info-list">
-              <li>{site.addressLine}</li>
-              <li>{site.addressCity}</li>
-              <li>zona De Angeli, Milano</li>
+              {copy.whereItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
               <li>
-                <a href={site.mapsUrl}>Apri la posizione su Google Maps</a>
+                <a href={site.mapsUrl}>{copy.mapsLink}</a>
               </li>
             </ul>
           </div>
 
           <div>
-            <h2 className="site-footer-title">Contatti</h2>
+            <h2 className="site-footer-title">{copy.titles.contact}</h2>
             <ul className="info-list">
               <li>
                 <a href={`tel:${site.phonePrimaryHref}`}>{site.phonePrimary}</a>
@@ -33,48 +90,41 @@ export default function SiteFooter() {
           </div>
 
           <div>
-            <h2 className="site-footer-title">Social</h2>
+            <h2 className="site-footer-title">{copy.titles.social}</h2>
             <ul className="info-list">
-              <li>
-                <a className="social-link" href={site.instagram}>
-                  <SocialIcon network="instagram" />
-                  Profilo Instagram di Elfa Bakery
-                </a>
-              </li>
-              <li>
-                <a className="social-link" href={site.facebook}>
-                  <SocialIcon network="facebook" />
-                  Pagina Facebook di Elfa Bakery
-                </a>
-              </li>
+              {copy.social.map((profile) => (
+                <li key={profile.network}>
+                  <a className="social-link" href={profile.href}>
+                    <SocialIcon network={profile.network} />
+                    {profile.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <h2 className="site-footer-title">Il negozio</h2>
+            <h2 className="site-footer-title">{copy.titles.shop}</h2>
             <ul className="info-list">
-              <li>Bakery, caffetteria, pasticceria e gastronomia</li>
-              <li>Pizza al trancio, kebab, falafel e dolci</li>
-              <li>Opzioni halal</li>
+              {copy.shopItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
             </ul>
           </div>
           <div>
-            <h2 className="site-footer-title">Legale</h2>
+            <h2 className="site-footer-title">{copy.titles.legal}</h2>
             <ul className="info-list">
               <li>
-                <Link to="/privacy-policy">Informativa sulla privacy</Link>
+                <Link to={localisedPath('/privacy-policy', locale)}>{copy.privacy}</Link>
               </li>
               <li>
-                <Link to="/cookie-policy">Cookie policy</Link>
+                <Link to={localisedPath('/cookie-policy', locale)}>{copy.cookies}</Link>
               </li>
             </ul>
           </div>
         </div>
 
-        <p className="site-footer-note">
-          I prezzi sono ancora in fase di conferma con il titolare. Per il
-          listino aggiornato chiedi direttamente al negozio.
-        </p>
+        <p className="site-footer-note">{copy.note}</p>
       </div>
     </footer>
   )

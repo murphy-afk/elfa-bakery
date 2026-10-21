@@ -35,9 +35,22 @@ function formatTime(value) {
   return `${hours}:${minutes}`
 }
 
-function formatSlot(row) {
-  if (row.is_closed) return 'Chiuso'
-  if (row.is_open_all_day) return 'Aperto 24 ore'
+// The week list is Italian first, English is the second language.
+const DAY_NAMES = {
+  it: ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
+  en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+}
+
+const CLOSED = { it: 'Chiuso', en: 'Closed' }
+const OPEN_ALL_DAY = { it: 'Aperto 24 ore', en: 'Open 24 hours' }
+
+function dayName(dayIndex, locale) {
+  return DAY_NAMES[locale]?.[dayIndex] ?? DAY_NAMES.it[dayIndex]
+}
+
+function formatSlot(row, locale) {
+  if (row.is_closed) return CLOSED[locale] ?? CLOSED.it
+  if (row.is_open_all_day) return OPEN_ALL_DAY[locale] ?? OPEN_ALL_DAY.it
   return `${formatTime(row.opens)} - ${formatTime(row.closes)}`
 }
 
@@ -52,8 +65,8 @@ function weekOrder(dayIndex) {
 
 // Days that share the same schedule collapse into one line, so a week of
 // identical rows does not repeat itself seven times on the page. The day
-// we are in is flagged, the panel marks it with an "oggi" chip.
-export function groupHours(rows) {
+// we are in is flagged, the panel marks it with a chip.
+export function groupHours(rows, locale = 'it') {
   const sorted = [...rows].sort(
     (a, b) => weekOrder(a.day_index) - weekOrder(b.day_index)
   )
@@ -82,15 +95,14 @@ export function groupHours(rows) {
   return groups.map((group) => {
     const first = group.rows[0]
     const last = group.rows[group.rows.length - 1]
-    const label =
-      group.rows.length > 1
-        ? `${first.day_name_it} - ${last.day_name_it}`
-        : first.day_name_it
+    const firstDay = dayName(first.day_index, locale)
+    const lastDay = dayName(last.day_index, locale)
+    const label = group.rows.length > 1 ? `${firstDay} - ${lastDay}` : firstDay
 
     return {
       key: `${first.day_index}-${last.day_index}`,
       label,
-      value: formatSlot(first),
+      value: formatSlot(first, locale),
       note: first.note || null,
       isToday: group.rows.some((row) => row.day_index === today)
     }

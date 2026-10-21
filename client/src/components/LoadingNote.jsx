@@ -1,7 +1,16 @@
+import { useLocale } from '../lib/i18n.js'
+
+const COPY = {
+  it: 'Caricamento in corso...',
+  en: 'Loading...'
+}
+
 export default function LoadingNote() {
+  const locale = useLocale()
+
   return (
     <p className="status-note" role="status">
-      Caricamento in corso...
+      {COPY[locale] ?? COPY.it}
     </p>
   )
 }

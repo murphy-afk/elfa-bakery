@@ -19,7 +19,15 @@ const routes = [
   '/contatti',
   '/privacy-policy',
   '/cookie-policy',
-  '/non-esiste'
+  '/non-esiste',
+  '/en',
+  '/en/menu',
+  '/en/chi-siamo',
+  '/en/galleria',
+  '/en/contatti',
+  '/en/privacy-policy',
+  '/en/cookie-policy',
+  '/en/non-esiste'
 ]
 
 // The bundle lands inside scripts/ on purpose, so that its bare require

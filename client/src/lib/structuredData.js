@@ -28,6 +28,7 @@ export const bakeryJsonLd = {
   name: site.name,
   url: `${site.origin}/`,
   image: `${site.origin}${ogPhoto.src}`,
+  inLanguage: 'it-IT',
   telephone: site.phonePrimary,
   priceRange: '€',
   servesCuisine: ['Pasticceria', 'Panetteria', 'Caffetteria', 'Gastronomia'],
@@ -45,4 +46,13 @@ export const bakeryJsonLd = {
   },
   openingHoursSpecification: [OPEN_ALL_DAY, SUNDAY],
   sameAs: [site.instagram, site.facebook]
+}
+
+// The same block for the English home page. Only the language, the URL,
+// and the names of the cuisines follow the page.
+export const bakeryJsonLdEn = {
+  ...bakeryJsonLd,
+  url: `${site.origin}/en`,
+  inLanguage: 'en-US',
+  servesCuisine: ['Pastry', 'Bakery', 'Coffee shop', 'Deli']
 }
