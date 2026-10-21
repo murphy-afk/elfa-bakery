@@ -5,7 +5,7 @@ import { getJSON } from '../lib/api.js'
 import { site } from '../lib/site.js'
 import usePageMeta from '../lib/usePageMeta.js'
 import { bakeryJsonLd } from '../lib/structuredData.js'
-import { heroPhoto } from '../lib/photos.js'
+import { heroPhoto, photoForItem } from '../lib/photos.js'
 import SectionHeading from '../components/SectionHeading.jsx'
 import PlaceholderImage from '../components/PlaceholderImage.jsx'
 import PriceTag from '../components/PriceTag.jsx'
@@ -124,23 +124,36 @@ export default function Home() {
 
           {!loading && !error && featured.length > 0 ? (
             <div className="card-grid card-grid-3">
-              {featured.map(({ item, category }) => (
-                <article className="card" key={item.id}>
-                  <PlaceholderImage
-                    label="Foto in arrivo"
-                    alt={`Spazio riservato alla fotografia di ${item.name_it}`} />
-                  <div className="card-body">
-                    <h3 className="card-title">{item.name_it}</h3>
-                    {item.description_it ? (
-                      <p className="card-text">{item.description_it}</p>
-                    ) : null}
-                    <div className="card-footer">
-                      <span className="card-text">{category.name_it}</span>
-                      <PriceTag price={item.price} />
+              {featured.map(({ item, category }) => {
+                const photo = photoForItem(item.id)
+
+                return (
+                  <article className="card" key={item.id}>
+                    {photo ? (
+                      <img
+                        className="card-photo"
+                        src={photo.image_url}
+                        alt={photo.alt_it}
+                        loading="lazy"
+                        decoding="async" />
+                    ) : (
+                      <PlaceholderImage
+                        label="Foto in arrivo"
+                        alt={`Spazio riservato alla fotografia di ${item.name_it}`} />
+                    )}
+                    <div className="card-body">
+                      <h3 className="card-title">{item.name_it}</h3>
+                      {item.description_it ? (
+                        <p className="card-text">{item.description_it}</p>
+                      ) : null}
+                      <div className="card-footer">
+                        <span className="card-text">{category.name_it}</span>
+                        <PriceTag price={item.price} />
+                      </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                )
+              })}
             </div>
           ) : null}
         </div>

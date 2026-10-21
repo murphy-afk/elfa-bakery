@@ -158,3 +158,24 @@ export const galleryPhotos = [
     alt_it: 'Cappuccino illy con cornetto appena sfornato'
   }
 ]
+
+// Photographs for the "I più amati" cards on the home page. The three
+// rows are the items flagged is_featured = 1 in db/seed.sql, and the
+// value is the id of the gallery photo above that shows the same dish.
+// Matched by hand against the shop exports on 2026-10-21.
+// A featured item with no entry here falls back to the placeholder card,
+// so a new featured row in the seed never breaks the section.
+export const featuredPhotoIds = {
+  22: 9, // Bagel Salmone, Formaggio e Uovo, food-bagel-03.jpg
+  25: 12, // Panino Sfogliato, food-panini-02.jpg
+  26: 16 // Lasagna, food-lasagne-01.jpg
+}
+
+// Look up the gallery photograph for a menu item id, or null when the
+// item has no matching photo yet.
+export function photoForItem(itemId) {
+  const photoId = featuredPhotoIds[itemId]
+  if (!photoId) return null
+
+  return galleryPhotos.find((photo) => photo.id === photoId) ?? null
+}
