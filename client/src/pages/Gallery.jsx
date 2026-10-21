@@ -1,6 +1,7 @@
 import usePageMeta from '../lib/usePageMeta.js'
 import { site } from '../lib/site.js'
 import { galleryPhotos } from '../lib/photos.js'
+import SocialIcon from '../components/SocialIcon.jsx'
 
 // The photographs come from client/src/lib/photos.js, a static list of
 // the images exported from the shop Instagram account. The same rows are
@@ -42,8 +43,10 @@ export default function Gallery() {
 
         <p className="status-note gallery-note">
           Ce ne sono altre sul nostro profilo{' '}
-          <a href={site.instagram}>Instagram di Elfa Bakery</a>, e altre
-          ancora in negozio. Vieni a trovarci in Via Sardegna 40.
+          <a className="social-link" href={site.instagram}>
+            <SocialIcon network="instagram" />
+            Instagram di Elfa Bakery
+          </a>, e altre ancora in negozio. Vieni a trovarci in Via Sardegna 40.
         </p>
       </section>
     </>

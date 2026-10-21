@@ -1,6 +1,7 @@
 import usePageMeta from '../lib/usePageMeta.js'
 import { site } from '../lib/site.js'
 import HoursPanel from '../components/HoursPanel.jsx'
+import SocialIcon from '../components/SocialIcon.jsx'
 
 // TODO: add the contact form once POST /api/contact actually delivers the
 // message. For now every route to the shop goes through the phone numbers
@@ -66,10 +67,16 @@ export default function Contact() {
             <h2 className="contact-panel-title">Social</h2>
             <ul className="info-list">
               <li>
-                <a href={site.instagram}>Profilo Instagram di Elfa Bakery</a>
+                <a className="social-link" href={site.instagram}>
+                  <SocialIcon network="instagram" />
+                  Profilo Instagram di Elfa Bakery
+                </a>
               </li>
               <li>
-                <a href={site.facebook}>Pagina Facebook di Elfa Bakery</a>
+                <a className="social-link" href={site.facebook}>
+                  <SocialIcon network="facebook" />
+                  Pagina Facebook di Elfa Bakery
+                </a>
               </li>
             </ul>
             <p className="contact-note">

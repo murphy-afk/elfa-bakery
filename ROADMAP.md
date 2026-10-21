@@ -2,7 +2,7 @@
 
 Project to design and build a new website for Elfa Bakery, a bakery, coffee shop, pastry shop, and deli in Milan, Italy.
 
-Status: API tests are in, sessions 0 to 4 are complete apart from the owner run of the SQL scripts. Session 5 leftovers: English copy, prerender. Instagram is the source for the logo, the photos, and the opening hours. All three are in: the logo is in the header, the 26 photos feed the gallery and the home hero, and the Open Graph image is set. The hours panel shows the confirmed schedule grouped by block and marks the current day, navigation scrolls back to the top, and the home hero photo is sized against the shop name. The three featured cards on the home page show the gallery photo of the same dish.
+Status: API tests are in, sessions 0 to 4 are complete apart from the owner run of the SQL scripts. Session 5 leftovers: English copy, prerender. Instagram is the source for the logo, the photos, and the opening hours. All three are in: the logo is in the header, the 26 photos feed the gallery and the home hero, and the Open Graph image is set. The hours panel shows the confirmed schedule grouped by block and marks the current day, navigation scrolls back to the top, and the home hero photo is sized against the shop name. The three featured cards on the home page show the gallery photo of the same dish, and every link to a social profile carries the Instagram or Facebook mark.
 Last updated: 2026-10-21.
 
 ## 1. Project goals
@@ -260,6 +260,7 @@ Blocked items are tracked in docs/owner-intake.md.
 - [x] Add an Open Graph image once the owner sends real photos. Done on 2026-10-20: og-elfa-bakery.jpg, a 1200x630 crop of the night shop front, declared in client/index.html and re-declared on every route by usePageMeta.js. Same image in the bakery JSON-LD.
 - [ ] Render the tags in the initial HTML with a prerender step, currently they are injected on load.
 - [x] Match the gallery photographs to the featured cards of the "I più amati" section on 2026-10-21. The three items flagged is_featured = 1 in db/seed.sql now show a shop photo instead of the placeholder: item 22 bagel with salmon, cheese and egg gets food-bagel-03, item 25 Panino Sfogliato gets food-panini-02, item 26 lasagna gets food-lasagne-01. The mapping lives in featuredPhotoIds in client/src/lib/photos.js, keyed by item id, and a featured item with no entry still falls back to the placeholder card.
+- [x] Add the social marks to the profile links on 2026-10-21. client/src/components/SocialIcon.jsx draws the Instagram and Facebook marks as inline SVG in currentColor, and the links in the footer, in the Contatti panel, and in the gallery note carry them through the .social-link class. The anchor text is unchanged, so screen readers still announce the full profile name.
 
 ### Session 6. SEO and performance
 

@@ -226,6 +226,21 @@
   font-size: var(--text-sm);
 }
 
+/* Social profile links, the brand mark sits before the link text and
+   takes its color from the link. */
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.social-icon {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
 /* Opening hours. One line per schedule block, day on the left,
    schedule on the right, the day we are in marked with a chip. */
 

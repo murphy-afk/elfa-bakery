@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import { site } from '../lib/site.js'
+import SocialIcon from './SocialIcon.jsx'
 
 export default function SiteFooter() {
   return (
@@ -35,10 +36,16 @@ export default function SiteFooter() {
             <h2 className="site-footer-title">Social</h2>
             <ul className="info-list">
               <li>
-                <a href={site.instagram}>Profilo Instagram di Elfa Bakery</a>
+                <a className="social-link" href={site.instagram}>
+                  <SocialIcon network="instagram" />
+                  Profilo Instagram di Elfa Bakery
+                </a>
               </li>
               <li>
-                <a href={site.facebook}>Pagina Facebook di Elfa Bakery</a>
+                <a className="social-link" href={site.facebook}>
+                  <SocialIcon network="facebook" />
+                  Pagina Facebook di Elfa Bakery
+                </a>
               </li>
             </ul>
           </div>
