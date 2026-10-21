@@ -37,7 +37,10 @@ The current schedule lives in the opening hours highlight on https://www.instagr
 - [x] Owner said on 2026-10-20 to use the logo as it is, only with rounded corners. client/src/assets/logo.png was derived from the export at 256x256 with the outside made transparent, and the header shows it.
 - [ ] A vector original of the logo, SVG. Only if one exists, the raster version is enough for now.
 - [ ] Confirmation of the brand colors, or the real ones if the roadmap proposal is wrong.
-- [ ] Real photos of the shop, the counter, the food, and the staff, with written permission to use them on the website. Export from Instagram into docs/references/instagram/, see the README there for the file names.
+- [x] Photos of the shop and the food received on 2026-10-20: 29 exports from the Instagram account in docs/references/instagram/, 26 of them live in the gallery and the home hero. The inventory and the file names are in the README there.
+- [ ] Written permission from the owner to use those 26 photos on the website. The shop posted them itself, but the intake sheet should say it in writing.
+- [ ] Decision on the 3 photos left out: interior-halloween-01 as seasonal, exterior-fashionweek-01 because it shows a person who needs their own consent, poster-fashionweek-01 because it is a graphic.
+- [ ] Real photos of the staff, or written consent from the people already in exterior-fashionweek-01. Nothing with a face ships until this is answered.
 - [ ] Photos must be originals, not screenshots from review sites. The watermarked images in docs/references/*.jpg are study only and must not ship.
 
 ## 5. Contact and legal

@@ -30,8 +30,37 @@ Suggested file names, kebab case with a two digit counter:
 - It is rendered in the header by client/src/components/SiteHeader.jsx at 48 CSS px, so 256 px covers any screen density.
 - The JPEG has no alpha channel, so the rounded corners cannot come from CSS alone on a coloured background. Regenerate the PNG whenever the mark changes and keep this file as the only source.
 
+## Photos exported here
+
+29 photographs exported by hand, original Instagram file names replaced with kebab case names. Every file keeps its exported resolution.
+
+In use on the site, 26 of them:
+
+- exterior-vetrina-01 (1080x1080): the shop front at night, name printed on the glass. Also the source of the Open Graph image.
+- counter-panini-01 (1025x1025): a row of panini on the counter with the logo on the wall. Also the source of the home hero, client/public/photos/hero-banco.jpg.
+- counter-barista-01, counter-confezione-01 (1080x1080): the barista at the espresso machine, a bread bag with the EB logo.
+- interior-counter-01 (1600x900): the room wide, counter, seats, ceiling lights.
+- food-pizza-01, food-pizza-02, food-bagel-01, food-bagel-03, food-bruschetta-01, food-panini-01, food-panini-02, food-burger-01, food-falafel-01, food-gastronomia-01, food-lasagne-01, food-insalata-01, food-insalata-02: the food set, 1080 to 1440 px squares.
+- pastry-collage-01, pastry-collage-02, pastry-crostata-01, dessert-tiramisu-01, dessert-cucchiaio-01: the sweet counter.
+- drinks-caffe-01, drinks-caffe-02, drinks-cappuccino-01: coffee.
+
+Left out of the site, 3 of them:
+
+- interior-halloween-01 (1440x1800): seasonal decoration, a reaper figure with a pumpkin. Wrong for a site that has to look right all year.
+- exterior-fashionweek-01 (1448x1931): a person in the shot. Needs written consent from them, not only from the shop.
+- poster-fashionweek-01 (1419x1843): a designed poster, not a photograph. Kept as reference for the "open 24/7, halal" wording.
+
+## What ships on the site
+
+- client/public/photos/: 28 files. 26 gallery images scaled to a 720 px long edge at JPEG quality 74, hero-banco.jpg at 1025 px quality 72, og-elfa-bakery.jpg a 1200x630 crop of exterior-vetrina-01 at quality 80. Total 2.4 MB, largest file 126 KB.
+- client/src/lib/photos.js: the single list the site reads. Every row carries image_url and alt_it in Italian, the same keys the gallery table uses. The home hero and the Open Graph image are exported from it too.
+- db/seed.sql: the same 26 rows in the gallery table, with alt_it and alt_en, so the API and the static list never disagree.
+- The header logo comes from client/src/assets/logo.png, see below.
+
+The gallery page reads the static list and not GET /api/gallery. It has to work before the database is seeded, and the Elfa API may not be the process listening on port 4000. db/seed.sql already holds the same 26 rows, and a later session swaps the list for the fetch once both are guaranteed.
+
 ## Before these images go on the site
 
 - Written permission from the owner to use them on the website, tracked in docs/owner-intake.md.
-- A caption and alt text for each file in the page language.
-- Resize and compress in the Session 6 image pipeline, do not ship the raw export.
+- A caption and alt text for each file in the page language. Done for all 26 in photos.js and seed.sql.
+- Resize and compress in the Session 6 image pipeline, do not ship the raw export. The files above were resized by hand as a stop gap. Session 6 replaces them with a real pipeline: responsive sizes, WebP or AVIF, and a build step that cannot drift from this inventory.

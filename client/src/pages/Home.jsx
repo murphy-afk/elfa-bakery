@@ -5,6 +5,7 @@ import { getJSON } from '../lib/api.js'
 import { site } from '../lib/site.js'
 import usePageMeta from '../lib/usePageMeta.js'
 import { bakeryJsonLd } from '../lib/structuredData.js'
+import { heroPhoto } from '../lib/photos.js'
 import SectionHeading from '../components/SectionHeading.jsx'
 import PlaceholderImage from '../components/PlaceholderImage.jsx'
 import PriceTag from '../components/PriceTag.jsx'
@@ -92,10 +93,13 @@ export default function Home() {
         </div>
 
         <div className="home-hero-figure">
-          <PlaceholderImage
-            tall
-            label="Foto del banco in arrivo"
-            alt="Spazio riservato alla fotografia del banco di Elfa Bakery" />
+          <img
+            className="home-hero-photo"
+            src={heroPhoto.src}
+            alt={heroPhoto.alt}
+            width={heroPhoto.width}
+            height={heroPhoto.height}
+            fetchPriority="high" />
         </div>
       </section>
 

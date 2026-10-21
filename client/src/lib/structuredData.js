@@ -2,6 +2,7 @@
 // Every value mirrors a row in db/seed.sql, nothing is guessed here.
 
 import { site } from './site.js'
+import { ogPhoto } from './photos.js'
 
 // Hours mirror db/seed.sql, confirmed by the owner on 2026-10-20.
 // Sunday 05:30 to 21:00, Monday to Saturday open all day.
@@ -26,6 +27,7 @@ export const bakeryJsonLd = {
   '@type': 'Bakery',
   name: site.name,
   url: `${site.origin}/`,
+  image: `${site.origin}${ogPhoto.src}`,
   telephone: site.phonePrimary,
   priceRange: '€',
   servesCuisine: ['Pasticceria', 'Panetteria', 'Caffetteria', 'Gastronomia'],

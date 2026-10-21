@@ -2,7 +2,7 @@
 
 Project to design and build a new website for Elfa Bakery, a bakery, coffee shop, pastry shop, and deli in Milan, Italy.
 
-Status: API tests are in, sessions 0 to 4 are complete apart from the owner run of the SQL scripts. Session 5 leftovers: English copy, Open Graph image, prerender. Instagram is the source for the logo, the photos, and the opening hours. The logo and the hours are in, the photos are not.
+Status: API tests are in, sessions 0 to 4 are complete apart from the owner run of the SQL scripts. Session 5 leftovers: English copy, prerender. Instagram is the source for the logo, the photos, and the opening hours. All three are in: the logo is in the header, the 26 photos feed the gallery and the home hero, and the Open Graph image is set.
 Last updated: 2026-10-20.
 
 ## 1. Project goals
@@ -226,7 +226,7 @@ Price level: cheap, about 1 to 10 euro per person.
 - [x] Fix the guessed items that Session 1 had put in the seed. Bagel Classico, Insalata Mista, and Insalata con Salmone were not in any source and are gone. Salad and side dish categories are now empty with a TODO instead of holding invented rows.
 - [x] Write docs/owner-intake.md, the single checklist to send to the owner.
 - [x] Take the logo from the shop Instagram account into docs/references/instagram/. The owner confirmed on 2026-10-20 to use it as it is, only with rounded corners, so client/src/assets/logo.png was derived from the export and the header now shows it.
-- [ ] Export the Instagram photos into docs/references/instagram/ and use them for the gallery, the home hero, and the Open Graph image.
+- [x] Export the Instagram photos into docs/references/instagram/ and use them for the gallery, the home hero, and the Open Graph image. Done on 2026-10-20: 29 exports renamed to kebab case, 26 of them shipped, the full inventory and the reasons for the 3 left out are in the README there.
 - [x] Paste the opening hours from the Instagram highlight, then write them into db/seed.sql. Done on 2026-10-20: Sunday 05:30 to 21:00, Monday to Saturday open 24 hours.
 - [ ] Collect from the owner: exact prices, correct hours, official phone number, legal company data for the privacy policy.
 - [ ] Fill in prices in Workbench once the owner confirms them.
@@ -253,13 +253,13 @@ Blocked items are tracked in docs/owner-intake.md.
 - [x] Add per page title, meta description, canonical URL, Open Graph tags, and JSON-LD through client/src/lib/usePageMeta.js.
 - [x] Add the bakery JSON-LD block with address, geo, hours, and social profiles in client/src/lib/structuredData.js.
 - [ ] Write the English versions of the pages and add hreflang. Italian only for now.
-- [ ] Add an Open Graph image once the owner sends real photos.
+- [x] Add an Open Graph image once the owner sends real photos. Done on 2026-10-20: og-elfa-bakery.jpg, a 1200x630 crop of the night shop front, declared in client/index.html and re-declared on every route by usePageMeta.js. Same image in the bakery JSON-LD.
 - [ ] Render the tags in the initial HTML with a prerender step, currently they are injected on load.
 
 ### Session 6. SEO and performance
 
 - Sitemap, robots, redirects if the old site had URLs, analytics.
-- Image pipeline, caching headers, compression, lazy loading.
+- Image pipeline, caching headers, compression, lazy loading. The 26 photos in client/public/photos/ were resized by hand as a stop gap: 720 px long edge at JPEG quality 74, hero 1025 px, Open Graph 1200x630. This session replaces them with a real build step: responsive sizes, WebP or AVIF, and a check that the output matches the inventory in client/src/lib/photos.js.
 
 ### Session 7. QA and launch
 
@@ -270,7 +270,7 @@ Blocked items are tracked in docs/owner-intake.md.
 ## 6. Open questions for the owner
 
 1. Official logo file and brand colors. Answered on 2026-10-20: use the exported 1080x1080 JPEG as it is, only with rounded corners, and it is live in the header. A vector original and the exact brand colors are still welcome.
-2. Real photos of the shop, food, and staff, with permission to use. Export them from @elfa_bakery_milan into docs/references/instagram/, the README there lists the file names.
+2. Real photos of the shop, food, and staff, with permission to use. Answered on 2026-10-20: 26 photos exported from @elfa_bakery_milan are live in the gallery and the home hero. Three were left out and need a decision: interior-halloween-01 as seasonal, exterior-fashionweek-01 because it shows a person who needs their own consent, and poster-fashionweek-01 because it is a graphic. Staff photos are still not collected.
 3. Exact opening hours, especially Sunday. Answered on 2026-10-20: Sunday 05:30 to 21:00, Monday to Saturday open 24 hours.
 4. Which phone number is public.
 5. Final menu with prices for each category.

@@ -5,10 +5,15 @@
 import { useEffect } from 'react'
 
 import { site } from './site.js'
+import { ogPhoto } from './photos.js'
 
 const DEFAULT_TITLE = 'Elfa Bakery | Bakery e Pasticceria a Milano'
 const TITLE_SUFFIX = ' | Elfa Bakery'
 const JSON_LD_ID = 'page-jsonld'
+
+// One share image for the whole site for now. Session 6 can add a
+// dedicated 1200x630 crop per page once there is a photo worth it.
+const OG_IMAGE_URL = `${site.origin}${ogPhoto.src}`
 
 function setMeta(attr, key, content) {
   if (!content) return
@@ -71,6 +76,8 @@ export default function usePageMeta({ title, description, path, jsonLd, noindex 
     setMeta('property', 'og:title', fullTitle)
     setMeta('property', 'og:description', description)
     setMeta('property', 'og:url', pageUrl)
+    setMeta('property', 'og:image', OG_IMAGE_URL)
+    setMeta('property', 'og:image:alt', ogPhoto.alt)
 
     if (noindex) {
       setMeta('name', 'robots', 'noindex, nofollow')

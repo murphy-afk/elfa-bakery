@@ -40,9 +40,17 @@
 }
 
 .home-hero-figure {
+  aspect-ratio: 4 / 3;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
+}
+
+.home-hero-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .home-hero-figure .ph-image {
@@ -57,6 +65,12 @@
 
   .home-hero h1 {
     font-size: var(--text-4xl);
+  }
+
+  /* On desktop the figure sits beside the copy, so a taller crop keeps
+     the panini row in frame without pushing the buttons off screen. */
+  .home-hero-figure {
+    aspect-ratio: 3 / 4;
   }
 }
 
