@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 
 import SiteHeader from './components/SiteHeader.jsx'
 import SiteFooter from './components/SiteFooter.jsx'
+import ScrollToTop from './components/ScrollToTop.jsx'
 import Home from './pages/Home.jsx'
 import Menu from './pages/Menu.jsx'
 import About from './pages/About.jsx'
@@ -17,6 +18,7 @@ export default function App() {
       <a className="skip-link" href="#contenuto">
         Salta al contenuto
       </a>
+      <ScrollToTop />
       <SiteHeader />
       <main className="site-main" id="contenuto">
         <Routes>
