@@ -11,10 +11,14 @@
 
 .site-header-inner {
   display: flex;
-  flex-wrap: wrap;
+  /* One row on a phone. Wrapping would drop the flag and the toggle onto
+     a second line on the left, below the logo, which is the one place
+     they must not be. The logo holds the left edge and the controls hold
+     the right edge; from 48 rem up the bar may break again, see below. */
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-sm) var(--space-lg);
+  gap: var(--space-sm);
   min-height: var(--header-height);
   padding-block: var(--space-sm);
 }
@@ -23,11 +27,25 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-sm);
+  /* The logo shrinks before the controls do, so on the narrowest screens
+     the name gives up a letter instead of the menu leaving the bar. */
+  min-width: 0;
   font-family: var(--font-heading);
-  font-size: var(--text-xl);
+  /* One step down from the desktop size, which is what keeps the whole
+     bar on a single line at phone widths. */
+  font-size: var(--text-lg);
   font-weight: 700;
   color: var(--color-amber);
   text-decoration: none;
+}
+
+/* Flex items are blockified, so this span takes the ellipsis when the
+   name runs out of room. */
+.site-logo-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .site-logo:hover {
@@ -38,30 +56,91 @@
    image carries its own shape and needs no border radius here. */
 .site-logo-mark {
   display: block;
+  /* The mark keeps its size, the name is the part that gives way. */
+  flex-shrink: 0;
   width: 3rem;
   height: 3rem;
 }
 
-.site-nav-list {
+/* Navigation. The flag and the toggle sit in the header bar, on the right
+   edge with the flag to the left of the toggle. On a phone the links drop
+   down from the bar as one full width row per page; from 48 rem up the
+   rows lay out as a line of links again and the toggle steps out of the
+   way. */
+
+.site-nav {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-xs) var(--space-lg);
-  margin: 0;
+  /* Keeps the controls on the right edge even when a wide bar breaks
+     into two lines and the nav ends up alone on the second one. */
+  margin-left: auto;
+  /* Tight on a phone, where the bar shares its width with the logo and
+     every spare pixel belongs to the wordmark. */
+  gap: var(--space-sm);
+}
+
+.site-nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
   padding: 0;
+  background-color: transparent;
+  color: var(--text-on-dark);
+  border: 1px solid var(--color-wood);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.site-nav-toggle:hover {
+  color: var(--color-amber);
+  border-color: var(--color-amber);
+}
+
+.site-nav-toggle-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Drop down panel. One page per row, each row the width of the page
+   content, a hairline between rows, and the current page marked with an
+   amber bar down its left edge. */
+
+.site-nav-list {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  /* Both inline paddings are cleared, the browser leaves 40px on a list
+     element otherwise, and the rows carry the gutter themselves. */
+  padding: var(--space-xs) 0;
   list-style: none;
+  background-color: var(--color-espresso);
+  border-bottom: 3px solid var(--color-amber);
+  box-shadow: var(--shadow-md);
+}
+
+.site-nav-list.is-open {
+  display: block;
+}
+
+.site-nav-list li + li {
+  border-top: 1px solid var(--color-espresso-soft);
 }
 
 .site-nav-link {
-  display: inline-block;
-  padding: var(--space-xs) var(--space-sm);
+  display: block;
+  padding: var(--space-md) var(--gutter);
   color: var(--text-on-dark);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   font-weight: 600;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
   text-decoration: none;
   text-transform: uppercase;
-  border-radius: var(--radius-sm);
 }
 
 .site-nav-link:hover {
@@ -69,8 +148,20 @@
 }
 
 .site-nav-link[aria-current="page"] {
-  color: var(--color-espresso);
-  background-color: var(--color-amber);
+  color: var(--color-amber);
+  background-color: var(--color-espresso-soft);
+  box-shadow: inset 4px 0 0 var(--color-amber);
+}
+
+/* The call button closes the panel and runs the full width of the rows. */
+.site-nav-list > li:last-child {
+  border-top: 0;
+}
+
+.site-nav-list .site-nav-cta {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-md) var(--gutter) var(--space-sm);
 }
 
 .site-nav-cta {
@@ -89,26 +180,93 @@
   background-color: var(--color-red-dark);
 }
 
-/* Language switch at the end of the navigation. The label is the name
-   of the language the link switches to, written in that language, and
-   the link points at the same page in the other locale. */
+/* Language switch. The flag carries the link, the name of the language
+   sits on the accessible label, so the tap target around the small flag
+   stays as tall as the toggle next to it. */
 .site-nav-lang {
   display: inline-flex;
   align-items: center;
-  padding: var(--space-xs) var(--space-sm);
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: var(--space-xs);
   color: var(--text-on-dark);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.06em;
   text-decoration: none;
-  text-transform: uppercase;
-  border: var(--border-thin);
-  border-radius: var(--radius-round);
+  border-radius: var(--radius-sm);
 }
 
 .site-nav-lang:hover {
-  color: var(--color-amber);
-  border-color: var(--color-amber);
+  background-color: var(--color-espresso-soft);
+}
+
+.site-nav-flag {
+  display: block;
+  width: 1.5rem;
+  height: 1rem;
+  border: 1px solid var(--color-wood);
+  border-radius: 2px;
+}
+
+@media (min-width: 48rem) {
+  .site-logo {
+    font-size: var(--text-xl);
+    /* The wordmark never gives way here. If the links no longer fit, the
+       bar breaks into a second line instead of clipping the name. */
+    flex-shrink: 0;
+  }
+
+  .site-nav {
+    gap: var(--space-md);
+  }
+
+  /* The bar may break into two lines again from here, because the link
+     row needs more room than a phone has. The logo keeps the left edge
+     and the nav keeps the right edge on either line. */
+  .site-header-inner {
+    flex-wrap: wrap;
+  }
+
+  .site-nav-toggle {
+    display: none;
+  }
+
+  .site-nav-list,
+  .site-nav-list.is-open {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs) var(--space-lg);
+    width: auto;
+    padding: 0;
+    background-color: transparent;
+    border-bottom: 0;
+    box-shadow: none;
+  }
+
+  .site-nav-list li + li {
+    border-top: 0;
+  }
+
+  .site-nav-link {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--text-sm);
+    letter-spacing: 0.03em;
+    border-radius: var(--radius-sm);
+  }
+
+  .site-nav-link[aria-current="page"] {
+    color: var(--color-espresso);
+    background-color: var(--color-amber);
+    box-shadow: none;
+  }
+
+  .site-nav-list .site-nav-cta {
+    display: inline-flex;
+    margin: 0;
+  }
 }
 
 /* Footer */
@@ -146,7 +304,9 @@
 }
 
 .site-footer-note {
-  padding-block: var(--space-md);
+  /* The last block of the footer, so it carries the bottom gap of the
+     column above it. */
+  padding-block: var(--space-md) var(--space-xl);
   border-top: var(--border-thin);
   border-color: var(--color-espresso-soft);
   font-size: var(--text-xs);

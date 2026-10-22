@@ -85,7 +85,11 @@ a {
 .site {
   display: flex;
   flex-direction: column;
+  /* The second line wins in browsers with a dynamic tool bar, where 100vh
+     is taller than what the phone actually shows and pushes the footer
+     below the fold on short pages. */
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .site-main {
@@ -144,28 +148,7 @@ a {
   transform: translateY(0);
 }
 
-.site-header {
-  background-color: var(--color-espresso);
-  color: var(--text-on-dark);
-  padding: var(--space-md) var(--gutter);
-}
-
-.site-logo {
-  font-family: var(--font-heading);
-  font-size: var(--text-xl);
-  font-weight: 700;
-  color: var(--color-amber);
-  text-decoration: none;
-}
-
-.site-footer {
-  background-color: var(--color-espresso);
-  color: var(--text-on-dark);
-  padding: var(--space-xl) var(--gutter);
-  text-align: center;
-}
-
-.site-footer p {
-  margin: var(--space-xs) 0;
-  font-size: var(--text-sm);
-}
+/* The header and the footer are styled in layout.css, which loads after
+   this file. An older copy of those rules lived here: it padded the
+   header and the footer one gutter away from the rest of the page and
+   centered the footer text. */

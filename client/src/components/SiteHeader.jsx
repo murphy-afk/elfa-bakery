@@ -20,7 +20,7 @@ export default function SiteHeader() {
             alt={LOGO_ALT[locale] ?? LOGO_ALT.it}
             width="256"
             height="256" />
-          {site.name}
+          <span className="site-logo-name">{site.name}</span>
         </Link>
         <SiteNav />
       </div>
