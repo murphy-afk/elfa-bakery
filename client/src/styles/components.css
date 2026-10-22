@@ -313,7 +313,8 @@
   color: var(--text-muted);
 }
 
-/* Status notes for loading and errors */
+/* Status notes for empty sections, short messages, and the draft legal
+   warning on the privacy and cookie pages */
 
 .status-note {
   padding: var(--space-lg);

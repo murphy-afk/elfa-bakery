@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 
-import { getJSON } from '../lib/api.js'
+import { loadMenu, loadAllergens } from '../lib/content.js'
+import { menuCategories, allergens as allergenList } from '../lib/menuSnapshot.js'
 import usePageMeta from '../lib/usePageMeta.js'
 import { useLocale } from '../lib/i18n.js'
 import MenuCategoryNav from '../components/MenuCategoryNav.jsx'
 import MenuItemCard from '../components/MenuItemCard.jsx'
-import LoadingNote from '../components/LoadingNote.jsx'
-import LoadErrorNote from '../components/LoadErrorNote.jsx'
 
 const COPY = {
   it: {
@@ -15,7 +14,6 @@ const COPY = {
       'Il menu di Elfa Bakery: pizza al trancio, bagel, panini, piadine, kebab, focacce e pasticceria in Via Sardegna 40, Milano. Piatti e allergeni.',
     heading: 'Il menu di Elfa Bakery',
     lede: 'Pizza al trancio, bagel, panini, piadine, kebab, focacce e pasticceria. Il listino è ancora in fase di conferma con il titolare, quindi i prezzi non sono ancora in linea.',
-    loadError: 'Non riusciamo a caricare il menu in questo momento.',
     count: (count) => `${count} proposte`,
     countEmpty: 'In aggiornamento',
     empty: 'I piatti di questa sezione arrivano a breve. Chiedi al banco per la disponibilità di oggi.',
@@ -29,7 +27,6 @@ const COPY = {
       'The Elfa Bakery menu: pizza by the slice, bagels, sandwiches, piadinas, kebab, focaccia and pastries in Via Sardegna 40, Milan. Dishes and allergens.',
     heading: 'The Elfa Bakery menu',
     lede: 'Pizza by the slice, bagels, sandwiches, piadinas, kebab, focaccia and pastries. The price list is still being confirmed with the owner, so the prices are not online yet.',
-    loadError: 'We could not load the menu right now.',
     count: (count) => `${count} items`,
     countEmpty: 'Being updated',
     empty: 'The dishes in this section are coming soon. Ask at the counter for what is available today.',
@@ -42,10 +39,12 @@ const COPY = {
 export default function Menu() {
   const locale = useLocale()
   const copy = COPY[locale] ?? COPY.it
-  const [categories, setCategories] = useState([])
-  const [allergens, setAllergens] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+  // The first paint shows the snapshot generated from db/seed.sql, so the
+  // prerendered HTML carries the whole menu and the allergen list, and a
+  // host without an API never shows a load error. The two requests below
+  // upgrade the data when an API answers, see client/src/lib/content.js.
+  const [categories, setCategories] = useState(menuCategories)
+  const [allergens, setAllergens] = useState(allergenList)
 
   usePageMeta({
     title: copy.title,
@@ -56,18 +55,13 @@ export default function Menu() {
   useEffect(() => {
     let active = true
 
-    Promise.all([getJSON('/menu'), getJSON('/allergens')])
+    Promise.all([loadMenu(), loadAllergens()])
       .then(([menuData, allergenData]) => {
         if (!active) return
         setCategories(menuData)
         setAllergens(allergenData)
       })
-      .catch(() => {
-        if (active) setError(true)
-      })
-      .finally(() => {
-        if (active) setLoading(false)
-      })
+      .catch(() => {})
 
     return () => {
       active = false
@@ -81,68 +75,61 @@ export default function Menu() {
         <p>{copy.lede}</p>
       </section>
 
-      {loading ? <LoadingNote /> : null}
-      {error ? <LoadErrorNote>{copy.loadError}</LoadErrorNote> : null}
+      <MenuCategoryNav categories={categories} />
 
-      {!loading && !error ? (
-        <>
-          <MenuCategoryNav categories={categories} />
+      {categories.map((category) => {
+        const titleId = `${category.slug}-title`
+        const categoryName =
+          locale === 'en' ? category.name_en || category.name_it : category.name_it
 
-          {categories.map((category) => {
-            const titleId = `${category.slug}-title`
-            const categoryName =
-              locale === 'en' ? category.name_en || category.name_it : category.name_it
-
-            return (
-              <section
-                className="container menu-category"
-                id={category.slug}
-                key={category.id}
-                aria-labelledby={titleId}>
-                <div className="menu-category-head">
-                  <h2 className="menu-category-title" id={titleId}>
-                    {categoryName}
-                  </h2>
-                  <span className="menu-category-count">
-                    {category.items.length > 0
-                      ? copy.count(category.items.length)
-                      : copy.countEmpty}
-                  </span>
-                </div>
-
-                {category.items.length === 0 ? (
-                  <p className="menu-empty">{copy.empty}</p>
-                ) : (
-                  <ul className="menu-list">
-                    {category.items.map((item) => (
-                      <MenuItemCard item={item} key={item.id} />
-                    ))}
-                  </ul>
-                )}
-              </section>
-            )
-          })}
-
+        return (
           <section
-            className="container menu-allergens-wrap"
-            id="allergeni"
-            aria-labelledby="allergeni-title">
-            <div className="menu-allergens">
-              <h2 className="menu-allergens-title" id="allergeni-title">
-                {copy.allergens}
+            className="container menu-category"
+            id={category.slug}
+            key={category.id}
+            aria-labelledby={titleId}>
+            <div className="menu-category-head">
+              <h2 className="menu-category-title" id={titleId}>
+                {categoryName}
               </h2>
-              <p className="menu-allergens-text">{copy.allergensText}</p>
-              <ul className="menu-allergens-list">
-                {allergens.map((allergen) => (
-                  <li className="menu-allergen" key={allergen.id}>
-                    {locale === 'en' ? allergen.name_en || allergen.name_it : allergen.name_it}
-                  </li>
+              <span className="menu-category-count">
+                {category.items.length > 0
+                  ? copy.count(category.items.length)
+                  : copy.countEmpty}
+              </span>
+            </div>
+
+            {category.items.length === 0 ? (
+              <p className="menu-empty">{copy.empty}</p>
+            ) : (
+              <ul className="menu-list">
+                {category.items.map((item) => (
+                  <MenuItemCard item={item} key={item.id} />
                 ))}
               </ul>
-            </div>
+            )}
           </section>
-        </>
-      ) : null}
+        )
+      })}
+
+      <section
+        className="container menu-allergens-wrap"
+        id="allergeni"
+        aria-labelledby="allergeni-title">
+        <div className="menu-allergens">
+          <h2 className="menu-allergens-title" id="allergeni-title">
+            {copy.allergens}
+          </h2>
+          <p className="menu-allergens-text">{copy.allergensText}</p>
+          <ul className="menu-allergens-list">
+            {allergens.map((allergen) => (
+              <li className="menu-allergen" key={allergen.id}>
+                {locale === 'en' ? allergen.name_en || allergen.name_it : allergen.name_it}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
     </div>
   )
 }

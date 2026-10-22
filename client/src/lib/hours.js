@@ -1,13 +1,14 @@
-// Opening hours, the single confirmed list the site renders.
+// Opening hours, the single confirmed schedule the site shows.
 // Every value mirrors a row in db/seed.sql, nothing is guessed here.
 // Confirmed by the owner on 2026-10-20, read from the opening hours
 // highlight on the shop Instagram account: Sunday 05:30 to 21:00,
-// Monday to Saturday open 24 hours.
-// The panel renders this list and not GET /api/hours yet. A database
-// seeded before 2026-10-20 still answers Sunday 00:00 to 15:00 with the
-// note "Orario da confermare", and that must not override a schedule the
-// owner has already confirmed. The fetch comes back once db/seed.sql has
-// been run against the launch database.
+// Monday to Saturday open 24 hours. The owner confirmed the same
+// schedule again on 2026-10-22 for Session 6.
+// The panel renders this list in its first paint, then asks
+// GET /api/hours for a newer answer through client/src/lib/content.js,
+// which throws that answer away when it is missing or still carries the
+// note "Orario da confermare". A database seeded before 2026-10-20 must
+// never override a schedule the owner has already confirmed.
 
 export const confirmedHours = [
   {
@@ -66,7 +67,12 @@ function weekOrder(dayIndex) {
 // Days that share the same schedule collapse into one line, so a week of
 // identical rows does not repeat itself seven times on the page. The day
 // we are in is flagged, the panel marks it with a chip.
-export function groupHours(rows, locale = 'it') {
+// options.today picks the day to flag and defaults to the day of the
+// machine. Pass null while rendering on a server: the prerendered HTML
+// must not depend on the day it was built, or it would not hydrate
+// tomorrow. The panel fills it in after mount instead.
+export function groupHours(rows, locale = 'it', options = {}) {
+  const { today = new Date().getDay() } = options
   const sorted = [...rows].sort(
     (a, b) => weekOrder(a.day_index) - weekOrder(b.day_index)
   )
@@ -90,8 +96,6 @@ export function groupHours(rows, locale = 'it') {
     })
   }
 
-  const today = new Date().getDay()
-
   return groups.map((group) => {
     const first = group.rows[0]
     const last = group.rows[group.rows.length - 1]
@@ -104,7 +108,7 @@ export function groupHours(rows, locale = 'it') {
       label,
       value: formatSlot(first, locale),
       note: first.note || null,
-      isToday: group.rows.some((row) => row.day_index === today)
+      isToday: today !== null && group.rows.some((row) => row.day_index === today)
     }
   })
 }

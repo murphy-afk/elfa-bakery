@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { getJSON } from '../lib/api.js'
+import { loadMenu } from '../lib/content.js'
+import { menuCategories } from '../lib/menuSnapshot.js'
 import { site } from '../lib/site.js'
 import usePageMeta from '../lib/usePageMeta.js'
 import { bakeryJsonLd, bakeryJsonLdEn } from '../lib/structuredData.js'
 import { heroShopfront, photoForItem, photoAlt } from '../lib/photos.js'
+import { PHOTO_SIZES } from '../lib/photoSizes.js'
 import { useLocale, localisedPath } from '../lib/i18n.js'
+import Photo from '../components/Photo.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import PlaceholderImage from '../components/PlaceholderImage.jsx'
 import PriceTag from '../components/PriceTag.jsx'
 import HoursPanel from '../components/HoursPanel.jsx'
-import LoadingNote from '../components/LoadingNote.jsx'
-import LoadErrorNote from '../components/LoadErrorNote.jsx'
 
 // Italian is the default language of the site, English is the second
 // one. Each page keeps both sets of strings next to the markup.
@@ -29,7 +30,6 @@ const COPY = {
       title: 'Cosa consigliano i nostri clienti',
       lede: 'Piatti e dolci che tornano sempre nelle recensioni. I prezzi arrivano appena il titolare conferma il listino.'
     },
-    featuredError: 'Non riusciamo a caricare i piatti in evidenza.',
     featuredEmpty: 'I piatti in evidenza arrivano a breve. Intanto guarda tutto il menu.',
     photoLabel: 'Foto in arrivo',
     photoAlt: (name) => `Spazio riservato alla fotografia di ${name}`,
@@ -77,7 +77,6 @@ const COPY = {
       title: 'What our customers keep recommending',
       lede: 'The dishes and sweets that keep coming back in the reviews. Prices go online as soon as the owner confirms the price list.'
     },
-    featuredError: 'We could not load the featured dishes.',
     featuredEmpty: 'The featured dishes are coming soon. In the meantime, look at the whole menu.',
     photoLabel: 'Photo on its way',
     photoAlt: (name) => `Space reserved for the photograph of ${name}`,
@@ -118,9 +117,11 @@ const COPY = {
 export default function Home() {
   const locale = useLocale()
   const copy = COPY[locale] ?? COPY.it
-  const [categories, setCategories] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+  // The first paint shows the snapshot generated from db/seed.sql, so the
+  // prerendered HTML carries the real cards and a host without an API
+  // never shows an empty section. GET /api/menu upgrades it when it
+  // answers, see client/src/lib/content.js.
+  const [categories, setCategories] = useState(menuCategories)
 
   usePageMeta({
     description: copy.metaDescription,
@@ -131,16 +132,11 @@ export default function Home() {
   useEffect(() => {
     let active = true
 
-    getJSON('/menu')
+    loadMenu()
       .then((data) => {
         if (active) setCategories(data)
       })
-      .catch(() => {
-        if (active) setError(true)
-      })
-      .finally(() => {
-        if (active) setLoading(false)
-      })
+      .catch(() => {})
 
     return () => {
       active = false
@@ -158,12 +154,13 @@ export default function Home() {
   return (
     <>
       <section className="home-hero" aria-labelledby="titolo-pagina">
-        <img
-          className="home-hero-bg"
-          src={heroShopfront.image_url}
+        <Photo
+          photo={heroShopfront}
           alt={photoAlt(heroShopfront, locale)}
-          fetchPriority="high"
-          decoding="async" />
+          sizes={PHOTO_SIZES.hero}
+          className="home-hero-bg"
+          loading="eager"
+          fetchPriority="high" />
 
         <div className="container home-hero-inner">
           <div className="home-hero-copy">
@@ -190,14 +187,9 @@ export default function Home() {
             title={copy.featured.title}
             lede={copy.featured.lede} />
 
-          {loading ? <LoadingNote /> : null}
-          {error ? <LoadErrorNote>{copy.featuredError}</LoadErrorNote> : null}
+          {featured.length === 0 ? <p className="status-note">{copy.featuredEmpty}</p> : null}
 
-          {!loading && !error && featured.length === 0 ? (
-            <p className="status-note">{copy.featuredEmpty}</p>
-          ) : null}
-
-          {!loading && !error && featured.length > 0 ? (
+          {featured.length > 0 ? (
             <div className="card-grid card-grid-3">
               {featured.map(({ item, category }) => {
                 const photo = photoForItem(item.id)
@@ -215,12 +207,10 @@ export default function Home() {
                 return (
                   <article className="card" key={item.id}>
                     {photo ? (
-                      <img
-                        className="card-photo"
-                        src={photo.image_url}
+                      <Photo
+                        photo={photo}
                         alt={photoAlt(photo, locale)}
-                        loading="lazy"
-                        decoding="async" />
+                        className="card-photo" />
                     ) : (
                       <PlaceholderImage
                         label={copy.photoLabel}

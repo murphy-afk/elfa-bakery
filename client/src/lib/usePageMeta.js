@@ -1,8 +1,12 @@
-// Keeps the per page SEO tags in sync while the site is a single page
-// app. Session 6 adds the prerender step so crawlers get the same tags
-// in the initial HTML.
+// Computes the head tags of a page and keeps them in sync while the site
+// runs as a single page app.
+// buildPageMeta is pure, so the prerender step in scripts/prerender.mjs
+// writes the very same tags into the HTML a crawler downloads first:
+// title, meta description, canonical, the hreflang pair, the Open Graph
+// tags, and the JSON-LD block. The hook applies them to document.head
+// while the site is open in a browser.
 
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { site } from './site.js'
 import { ogPhoto } from './photos.js'
@@ -15,9 +19,65 @@ const DEFAULT_TITLES = {
 const TITLE_SUFFIX = ' | Elfa Bakery'
 const JSON_LD_ID = 'page-jsonld'
 
-// One share image for the whole site for now. Session 6 can add a
-// dedicated 1200x630 crop per page once there is a photo worth it.
+// One share image for the whole site for now. A dedicated 1200x630 crop
+// per page can come later once there is a photo worth it.
 const OG_IMAGE_URL = `${site.origin}${ogPhoto.src}`
+
+// The tags of the page that rendered last, waiting for the prerender
+// step to pick them up. It reads the value right after renderToString,
+// so the render side effect below cannot reach a browser.
+let lastMeta = null
+
+// buildPageMeta({ title, description, path, jsonLd, noindex }, locale)
+// - title: short page title, the suffix and the default come from here.
+// - description: the meta description, in the language of the page.
+// - path: the route path in its Italian form, '/menu' on both languages.
+//   The canonical URL, the og:url, and the hreflang pair are built from it.
+// - jsonLd: structured data object for the page.
+// - noindex: set on the 404 page, drops the canonical and the alternates.
+export function buildPageMeta({ title, description, path, jsonLd, noindex } = {}, locale) {
+  const fullTitle = title
+    ? `${title}${TITLE_SUFFIX}`
+    : DEFAULT_TITLES[locale] ?? DEFAULT_TITLES.it
+  const pageUrl = path ? `${site.origin}${localisedPath(path, locale)}` : null
+  const italianUrl = path ? `${site.origin}${path}` : null
+  const englishUrl = path ? `${site.origin}${localisedPath(path, 'en')}` : null
+
+  return {
+    lang: htmlLang(locale),
+    title: fullTitle,
+    description: description ?? null,
+    robots: noindex ? 'noindex, nofollow' : null,
+    canonical: noindex ? null : pageUrl,
+    // Every indexed page announces both language versions of itself and
+    // points x-default at Italian, the main language of the shop.
+    alternates:
+      noindex || !path
+        ? []
+        : [
+            { hreflang: 'it', href: italianUrl },
+            { hreflang: 'en', href: englishUrl },
+            { hreflang: 'x-default', href: italianUrl }
+          ],
+    og: {
+      title: fullTitle,
+      description: description ?? null,
+      url: pageUrl,
+      image: OG_IMAGE_URL,
+      imageAlt: locale === 'en' ? ogPhoto.alt_en || ogPhoto.alt : ogPhoto.alt,
+      locale: ogLocale(locale),
+      localeAlternate: ogLocale(locale === 'en' ? 'it' : 'en')
+    },
+    jsonLd: jsonLd ?? null
+  }
+}
+
+// Handed to scripts/prerender.mjs after a route has been rendered.
+export function takePageMeta() {
+  const meta = lastMeta
+  lastMeta = null
+  return meta
+}
 
 function setMeta(attr, key, content) {
   if (!content) return
@@ -49,21 +109,12 @@ function setCanonical(href) {
   link.setAttribute('href', href)
 }
 
-// Every indexed page announces both language versions of itself and
-// points x-default at Italian, the main language of the shop. The links
-// are cleared first so a route change cannot leave stale pairs behind.
-function setAlternates(italianUrl, englishUrl) {
+// The links are cleared first so a route change cannot leave stale pairs
+// behind.
+function setAlternates(alternates) {
   document.head
     .querySelectorAll('link[rel="alternate"][hreflang]')
     .forEach((link) => link.remove())
-
-  if (!italianUrl) return
-
-  const alternates = [
-    { hreflang: 'it', href: italianUrl },
-    { hreflang: 'en', href: englishUrl },
-    { hreflang: 'x-default', href: italianUrl }
-  ]
 
   for (const alternate of alternates) {
     const link = document.createElement('link')
@@ -89,50 +140,39 @@ function setJsonLd(data) {
   tag.textContent = JSON.stringify(data)
 }
 
-// usePageMeta({ title, description, path, jsonLd, noindex })
-// - title: short page title, the suffix and the default come from here.
-// - path: the route path in its Italian form, '/menu' on both languages.
-//   The hook adds the /en prefix when the current locale is English and
-//   builds the canonical URL, the og:url, and the hreflang pair from it.
-// - jsonLd: structured data object, removed again on unmount.
-// - noindex: set on the 404 page, drops the canonical and the alternates.
-export default function usePageMeta({ title, description, path, jsonLd, noindex } = {}) {
+export default function usePageMeta(options = {}) {
   const locale = useLocale()
-  const fullTitle = title
-    ? `${title}${TITLE_SUFFIX}`
-    : DEFAULT_TITLES[locale] ?? DEFAULT_TITLES.it
-  const pageUrl = path ? `${site.origin}${localisedPath(path, locale)}` : null
-  const italianUrl = path ? `${site.origin}${path}` : null
-  const englishUrl = path ? `${site.origin}${localisedPath(path, 'en')}` : null
-  const ogAlt = locale === 'en' ? ogPhoto.alt_en || ogPhoto.alt : ogPhoto.alt
+  const { title, description, path, jsonLd, noindex } = options
+
+  const meta = useMemo(
+    () => buildPageMeta({ title, description, path, jsonLd, noindex }, locale),
+    [title, description, path, jsonLd, noindex, locale]
+  )
+
+  lastMeta = meta
 
   useEffect(() => {
-    document.documentElement.lang = htmlLang(locale)
-    document.title = fullTitle
+    document.documentElement.lang = meta.lang
+    document.title = meta.title
 
-    setMeta('name', 'description', description)
-    setMeta('property', 'og:title', fullTitle)
-    setMeta('property', 'og:description', description)
-    setMeta('property', 'og:url', pageUrl)
-    setMeta('property', 'og:image', OG_IMAGE_URL)
-    setMeta('property', 'og:image:alt', ogAlt)
-    setMeta('property', 'og:locale', ogLocale(locale))
-    setMeta('property', 'og:locale:alternate', ogLocale(locale === 'en' ? 'it' : 'en'))
+    setMeta('name', 'description', meta.description)
+    setMeta('property', 'og:title', meta.og.title)
+    setMeta('property', 'og:description', meta.og.description)
+    setMeta('property', 'og:url', meta.og.url)
+    setMeta('property', 'og:image', meta.og.image)
+    setMeta('property', 'og:image:alt', meta.og.imageAlt)
+    setMeta('property', 'og:locale', meta.og.locale)
+    setMeta('property', 'og:locale:alternate', meta.og.localeAlternate)
 
-    if (noindex) {
-      setMeta('name', 'robots', 'noindex, nofollow')
-      setCanonical(null)
-      setAlternates(null, null)
-    } else {
-      removeMeta('name', 'robots')
-      setCanonical(pageUrl)
-      setAlternates(italianUrl, englishUrl)
-    }
+    if (meta.robots) setMeta('name', 'robots', meta.robots)
+    else removeMeta('name', 'robots')
 
-    setJsonLd(jsonLd)
+    setCanonical(meta.canonical)
+    setAlternates(meta.alternates)
+    setJsonLd(meta.jsonLd)
 
     return () => {
       setJsonLd(null)
     }
-  }, [fullTitle, description, pageUrl, italianUrl, englishUrl, ogAlt, locale, jsonLd, noindex])
+  }, [meta])
 }

@@ -5,7 +5,7 @@
 
 import { useLocation } from 'react-router-dom'
 
-const EN_PREFIX = '/en'
+export const EN_PREFIX = '/en'
 
 const HTML_LANG = { it: 'it', en: 'en' }
 const OG_LOCALE = { it: 'it_IT', en: 'en_US' }
@@ -30,10 +30,14 @@ export function localisedPath(path, locale) {
 }
 
 // The current path stripped of the English prefix, so it can be rebuilt
-// in the other locale by the language switch in the header.
+// in the other locale by the language switch in the header. A host that
+// serves a folder per route (GitHub Pages redirects /menu to /menu/)
+// hands over a trailing slash, which is removed first: the language
+// switch and the prerendered markup then agree on the same URL.
 export function basePathFromPath(pathname) {
-  if (localeFromPath(pathname) !== 'en') return pathname
-  return pathname.slice(EN_PREFIX.length) || '/'
+  const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
+  if (localeFromPath(path) !== 'en') return path || '/'
+  return path.slice(EN_PREFIX.length) || '/'
 }
 
 export function htmlLang(locale) {
