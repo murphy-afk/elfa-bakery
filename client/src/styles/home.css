@@ -4,7 +4,7 @@
    layer above it so the text keeps its contrast on any screen. */
 .home-hero {
   position: relative;
-  display: flex;
+  display: grid;
   align-items: center;
   min-height: clamp(24rem, 58vh, 34rem);
   padding-block: var(--space-3xl);
@@ -36,6 +36,8 @@
 
 .home-hero-copy {
   max-width: 34rem;
+  margin-inline: auto;
+  text-align: center;
 }
 
 .home-hero-kicker {
@@ -63,6 +65,7 @@
 }
 
 .home-hero-actions {
+  justify-content: center;
   margin-top: var(--space-xl);
 }
 
@@ -87,6 +90,10 @@
 .home-visit {
   display: grid;
   gap: var(--space-xl);
+}
+
+.open-menu-btn {
+  width: 100%;
 }
 
 .home-visit-panel {

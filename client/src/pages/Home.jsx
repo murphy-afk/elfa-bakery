@@ -278,7 +278,7 @@ export default function Home() {
                 <a className="btn btn-primary" href={site.mapsUrl}>
                   {copy.mapsLink}
                 </a>
-                <Link className="btn btn-secondary" to={localisedPath('/menu', locale)}>
+                <Link className="btn btn-secondary open-menu-btn" to={localisedPath('/menu', locale)}>
                   {copy.menuLink}
                 </Link>
               </div>
