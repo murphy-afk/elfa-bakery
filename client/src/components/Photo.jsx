@@ -56,7 +56,7 @@ export default function Photo({
   }
 
   return (
-    <picture>
+    <picture className="photo-picture">
       {variant.sources.map((source) => (
         <source
           key={source.type}
