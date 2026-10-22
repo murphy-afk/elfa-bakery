@@ -3,8 +3,10 @@ import { Fragment } from 'react'
 import usePageMeta from '../lib/usePageMeta.js'
 import { useLocale } from '../lib/i18n.js'
 
-// Draft policy. The analytics tools are chosen in Session 6, and the
-// cookie banner decision depends on that choice, see docs/owner-intake.md.
+// The analytics tool is Plausible, loaded only when the build sets
+// VITE_PLAUSIBLE_DOMAIN, see client/src/lib/analytics.js. It sets no
+// cookie, so no consent banner is needed for it. The hosting details and
+// the legal data are still open, see docs/owner-intake.md.
 
 const COPY = {
   it: {
@@ -14,7 +16,7 @@ const COPY = {
     heading: 'Cookie policy',
     lede: 'Questa pagina spiega quali cookie usa il sito elfabakery.it e come puoi gestirli dal tuo browser.',
     warning:
-      'Bozza da completare: la scelta degli strumenti di analisi e i dettagli del provider di hosting arrivano nelle prossime sessioni.',
+      'Bozza da completare: i dettagli del provider di hosting e i dati societari per la privacy arrivano nelle prossime sessioni.',
     sections: [
       {
         heading: 'Cosa sono i cookie',
@@ -30,7 +32,7 @@ const COPY = {
       },
       {
         heading: 'Strumenti di analisi',
-        text: 'Nessuno strumento di analisi è attivo oggi. Se ne verrà attivato uno, questa pagina verrà aggiornata e, se serve, verrà mostrato un banner per raccogliere il tuo consenso prima dell’attivazione.'
+        text: 'Il sito usa Plausible Analytics per contare le visite in forma anonima, e solo per capire quante persone arrivano sulle pagine. Plausible non salva cookie e non raccoglie dati personali, quindi non serve alcun banner di consenso.'
       },
       {
         heading: 'Come gestire i cookie dal browser',
@@ -49,7 +51,7 @@ const COPY = {
     heading: 'Cookie policy',
     lede: 'This page explains which cookies the site elfabakery.it uses and how you can manage them from your browser.',
     warning:
-      'Draft to complete: the choice of analytics tools and the details of the hosting provider are coming in the next sessions.',
+      'Draft to complete: the details of the hosting provider and the company data for the privacy policy are coming in the next sessions.',
     sections: [
       {
         heading: 'What cookies are',
@@ -65,7 +67,7 @@ const COPY = {
       },
       {
         heading: 'Analytics tools',
-        text: 'No analytics tool is active today. If one is switched on, this page will be updated and, where needed, a banner will ask for your consent before it is turned on.'
+        text: 'The site uses Plausible Analytics to count visits anonymously, only to understand how many people reach each page. Plausible sets no cookie and collects no personal data, so no consent banner is needed for it.'
       },
       {
         heading: 'How to manage cookies from your browser',

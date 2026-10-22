@@ -1,0 +1,55 @@
+# Builds the site and publishes it on GitHub Pages, the temporary home of
+# the project until the client approves it and the site moves to its own
+# host. The preview lives under /elfa-bakery/, so VITE_BASE tells the
+# build, the router, and the prerender step the same base path.
+# PLAUSIBLE_DOMAIN is an optional repository variable: set it to
+# elfabakery.it and the build loads Plausible, leave it empty and the
+# preview ships with no analytics at all, see client/src/lib/analytics.js.
+# The deployment is a folder per route plus 404.html, which is how the
+# single page app gets every URL, including the English ones under /en.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Build the site
+        run: npm run build
+        env:
+          VITE_BASE: /elfa-bakery/
+          VITE_PLAUSIBLE_DOMAIN: ${{ vars.PLAUSIBLE_DOMAIN }}
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: client/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
