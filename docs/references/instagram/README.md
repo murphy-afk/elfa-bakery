@@ -36,8 +36,8 @@ Suggested file names, kebab case with a two digit counter:
 
 In use on the site, 26 of them:
 
-- exterior-vetrina-01 (1080x1080): the shop front at night, name printed on the glass. Also the source of the Open Graph image.
-- counter-panini-01 (1025x1025): a row of panini on the counter with the logo on the wall. Also the source of the home hero, client/public/photos/hero-banco.jpg.
+- exterior-vetrina-01 (1080x1080): the shop front at night, name printed on the glass. Also the source of the home hero and of the Open Graph image.
+- counter-panini-01 (1025x1025): a row of panini on the counter with the logo on the wall.
 - counter-barista-01, counter-confezione-01 (1080x1080): the barista at the espresso machine, a bread bag with the EB logo.
 - interior-counter-01 (1600x900): the room wide, counter, seats, ceiling lights.
 - food-pizza-01, food-pizza-02, food-bagel-01, food-bagel-03, food-bruschetta-01, food-panini-01, food-panini-02, food-burger-01, food-falafel-01, food-gastronomia-01, food-lasagne-01, food-insalata-01, food-insalata-02: the food set, 1080 to 1440 px squares.
@@ -52,15 +52,16 @@ Left out of the site, 3 of them:
 
 ## What ships on the site
 
-- client/public/photos/: 28 files. 26 gallery images scaled to a 720 px long edge at JPEG quality 74, hero-banco.jpg at 1025 px quality 72, og-elfa-bakery.jpg a 1200x630 crop of exterior-vetrina-01 at quality 80. Total 2.4 MB, largest file 126 KB.
-- client/src/lib/photos.js: the single list the site reads. Every row carries image_url and alt_it in Italian, the same keys the gallery table uses. The home hero and the Open Graph image are exported from it too.
-- db/seed.sql: the same 26 rows in the gallery table, with alt_it and alt_en, so the API and the static list never disagree.
+- client/public/photos/: 235 files, written by scripts/build-images.mjs and not committed. For each of the 26 photographs the pipeline writes 480, 720, and 1080 px in avif, webp, and jpeg, plus og-elfa-bakery.jpg, the 1200x630 crop of exterior-vetrina-01. A source narrower than 720 px is refused, so counter-panini-01 tops out at 1025 px. Total 17 MB across every format, largest single file 260 KB, which no browser downloads twice: it takes one format at one width.
+- client/src/lib/photoVariants.js: the generated module listing what the pipeline wrote, keyed by the image_url in photos.js. client/src/components/Photo.jsx turns it into a <picture>.
+- client/src/lib/photos.js: the single list the site reads, and the inventory the pipeline checks itself against. Every row carries image_url, alt_it in Italian, and alt_en in English, the same keys the gallery table uses. The home hero and the Open Graph image are exported from it too.
+- db/seed.sql: the same 26 rows in the gallery table, with alt_it and alt_en. Checked row by row against photos.js on 2026-10-22, so the API and the static list do not disagree.
 - The header logo comes from client/src/assets/logo.png, see below.
 
-The gallery page reads the static list and not GET /api/gallery. It has to work before the database is seeded, and the Elfa API may not be the process listening on port 4000. db/seed.sql already holds the same 26 rows, and a later session swaps the list for the fetch once both are guaranteed.
+The gallery page reads the static list and not GET /api/gallery. It has to work before the database is seeded, and it has to work on a static host that has no API at all. db/seed.sql already holds the same 26 rows for when the site runs behind the API.
 
 ## Before these images go on the site
 
 - Written permission from the owner to use them on the website, tracked in docs/owner-intake.md.
 - A caption and alt text for each file in the page language. Done for all 26 in photos.js and seed.sql.
-- Resize and compress in the Session 6 image pipeline, do not ship the raw export. The files above were resized by hand as a stop gap. Session 6 replaces them with a real pipeline: responsive sizes, WebP or AVIF, and a build step that cannot drift from this inventory.
+- Resize and compress through the image pipeline, do not ship the raw export. Done on 2026-10-22: scripts/build-images.mjs resizes the exports into client/public/photos and generates client/src/lib/photoVariants.js, and it stops the build if its output drifts from the list in client/src/lib/photos.js. A new photograph goes in here, then gets a row in photos.js and a run of npm run build:images.

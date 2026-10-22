@@ -1,11 +1,9 @@
 // The shop's own photographs, exported from the Instagram account and
 // resized into client/public/photos. Rows use the same keys as the
-// gallery table (id, image_url, alt_it) so the page can swap between the
-// API and this list without changing the markup. Every row also carries
-// alt_en, the English alt text the English pages render, so the
-// description matches the language of the page. The gallery table in
-// db/schema.sql still holds alt_it only: add an alt_en column to the
-// table and to db/seed.sql before the gallery page reads GET /api/gallery.
+// gallery table (id, image_url, alt_it, alt_en) so the page can swap
+// between the API and this list without changing the markup. The
+// English pages render alt_en, so the description matches the language
+// of the page.
 
 // The gallery table in MySQL holds the same list once db/seed.sql runs.
 // The gallery page reads this module and not GET /api/gallery, so it

@@ -1,14 +1,19 @@
 import usePageMeta from '../lib/usePageMeta.js'
 import { site } from '../lib/site.js'
 import { galleryPhotos, photoAlt } from '../lib/photos.js'
+import { PHOTO_SIZES } from '../lib/photoSizes.js'
 import { useLocale } from '../lib/i18n.js'
+import Photo from '../components/Photo.jsx'
 import SocialIcon from '../components/SocialIcon.jsx'
 
 // The photographs come from client/src/lib/photos.js, a static list of
 // the images exported from the shop Instagram account. The same rows are
-// in the gallery table in db/seed.sql. A later session swaps this list
-// for a fetch of GET /api/gallery once the database is seeded and the
-// API is guaranteed to be the process behind the site.
+// in the gallery table in db/seed.sql, and GET /api/gallery returns them
+// too. The page reads the list and not the API, so the gallery works
+// before the database is seeded and on a host with no API process.
+// Each photograph renders through the Photo component, which picks the
+// size and the format the browser needs out of the files
+// scripts/build-images.mjs wrote.
 
 const COPY = {
   it: {
@@ -56,11 +61,10 @@ export default function Gallery() {
         <ul className="gallery-grid">
           {galleryPhotos.map((photo) => (
             <li className="gallery-item" key={photo.id}>
-              <img
-                src={photo.image_url}
+              <Photo
+                photo={photo}
                 alt={photoAlt(photo, locale)}
-                loading="lazy"
-                decoding="async"
+                sizes={PHOTO_SIZES.gallery}
                 className="gallery-photo" />
             </li>
           ))}

@@ -8,3 +8,6 @@ Thumbs.db
 .vite/
 coverage/
 scripts/.smoke-app.cjs
+scripts/.image-cache.json
+client/dist-ssr/
+client/public/photos/
