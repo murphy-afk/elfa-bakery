@@ -139,6 +139,10 @@
 
 .menu-item-aside {
   flex: 0 0 auto;
+  /* On a phone the name and the price end up on two lines, the margin
+     keeps the price on the right edge of the row instead of dropping
+     under the name on the left. */
+  margin-left: auto;
   text-align: right;
 }
 
@@ -164,10 +168,15 @@
   color: var(--text-muted);
 }
 
-/* Allergen list, required on the menu page */
+/* Allergen list, required on the menu page. The wrapper keeps the
+   container, so the panel lines up with the menu rows above it. */
+
+.menu-allergens-wrap {
+  margin-top: var(--space-3xl);
+  scroll-margin-top: 6rem;
+}
 
 .menu-allergens {
-  margin-top: var(--space-3xl);
   padding: var(--space-lg);
   background-color: var(--color-surface);
   border: var(--border-thin);

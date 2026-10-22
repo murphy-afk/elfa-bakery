@@ -124,20 +124,22 @@ export default function Menu() {
           })}
 
           <section
-            className="container menu-allergens"
+            className="container menu-allergens-wrap"
             id="allergeni"
             aria-labelledby="allergeni-title">
-            <h2 className="menu-allergens-title" id="allergeni-title">
-              {copy.allergens}
-            </h2>
-            <p className="menu-allergens-text">{copy.allergensText}</p>
-            <ul className="menu-allergens-list">
-              {allergens.map((allergen) => (
-                <li className="menu-allergen" key={allergen.id}>
-                  {locale === 'en' ? allergen.name_en || allergen.name_it : allergen.name_it}
-                </li>
-              ))}
-            </ul>
+            <div className="menu-allergens">
+              <h2 className="menu-allergens-title" id="allergeni-title">
+                {copy.allergens}
+              </h2>
+              <p className="menu-allergens-text">{copy.allergensText}</p>
+              <ul className="menu-allergens-list">
+                {allergens.map((allergen) => (
+                  <li className="menu-allergen" key={allergen.id}>
+                    {locale === 'en' ? allergen.name_en || allergen.name_it : allergen.name_it}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </section>
         </>
       ) : null}
