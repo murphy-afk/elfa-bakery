@@ -16,15 +16,6 @@
 // (a person in the shot), poster-fashionweek-01 (a graphic, not a photo).
 // See docs/references/instagram/README.md for the full inventory.
 
-// Shown in the home hero. Source file: counter-panini-01.jpg.
-export const heroPhoto = {
-  src: '/photos/hero-banco.jpg',
-  alt: 'Una fila di panini appena preparati sul banco, con il logo di Elfa Bakery sulla parete',
-  alt_en: 'A row of freshly made sandwiches on the counter, with the Elfa Bakery logo on the wall',
-  width: 1025,
-  height: 1025
-}
-
 // Used for the Open Graph tags on every page.
 export const ogPhoto = {
   src: '/photos/og-elfa-bakery.jpg',
@@ -190,6 +181,10 @@ export const galleryPhotos = [
     alt_en: 'Illy cappuccino with a freshly baked croissant'
   }
 ]
+
+// Shown as the background of the home hero section. It is the same row as
+// gallery id 1, the shop front at night, so the alt text stays in one place.
+export const heroShopfront = galleryPhotos.find((photo) => photo.id === 1) ?? galleryPhotos[0]
 
 // Photographs for the "I più amati" cards on the home page. The three
 // rows are the items flagged is_featured = 1 in db/seed.sql, and the

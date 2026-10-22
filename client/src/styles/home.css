@@ -1,10 +1,37 @@
 /* Home page. */
 
+/* Hero. The shop front fills the whole section, the copy sits on a dark
+   layer above it so the text keeps its contrast on any screen. */
 .home-hero {
-  display: grid;
-  gap: var(--space-xl);
+  position: relative;
+  display: flex;
   align-items: center;
-  padding-block: var(--space-2xl);
+  min-height: clamp(24rem, 58vh, 34rem);
+  padding-block: var(--space-3xl);
+  overflow: hidden;
+  background-color: var(--color-espresso);
+}
+
+.home-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 45%;
+}
+
+/* The dark layer over the photograph, drawn by the section itself. */
+.home-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--overlay-hero);
+}
+
+.home-hero-inner {
+  position: relative;
+  z-index: 1;
 }
 
 .home-hero-copy {
@@ -26,53 +53,22 @@
 
 .home-hero h1 {
   font-size: var(--text-3xl);
-  color: var(--color-red);
+  color: var(--color-amber);
 }
 
 .home-tagline {
   margin-top: var(--space-md);
   font-size: var(--text-lg);
-  color: var(--text-muted);
+  color: var(--text-on-dark);
 }
 
 .home-hero-actions {
   margin-top: var(--space-xl);
 }
 
-.home-hero-figure {
-  aspect-ratio: 4 / 3;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  overflow: hidden;
-}
-
-.home-hero-photo {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.home-hero-figure .ph-image {
-  border-bottom: 0;
-}
-
 @media (min-width: 48rem) {
-  .home-hero {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-    padding-block: var(--space-3xl);
-  }
-
   .home-hero h1 {
     font-size: var(--text-4xl);
-  }
-
-  /* The photo must not outweigh the shop name, so on desktop it stops at
-     28 rem wide and keeps the 4/3 crop instead of growing into a tall
-     panel beside the copy. */
-  .home-hero-figure {
-    max-width: 28rem;
-    justify-self: end;
   }
 }
 

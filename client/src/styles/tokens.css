@@ -21,6 +21,11 @@
   --color-border: #e3d6bd;
   --color-border-strong: var(--color-wood);
 
+  /* Dark layer laid over a photograph so the text above it keeps its
+     contrast. Espresso at 75 percent, checked against the brightest
+     patch of the shop front photo behind the hero. */
+  --overlay-hero: rgba(43, 33, 26, 0.75);
+
   /* Text */
   --text-body: var(--color-espresso);
   --text-muted: var(--color-espresso-soft);

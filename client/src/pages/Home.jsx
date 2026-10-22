@@ -5,7 +5,7 @@ import { getJSON } from '../lib/api.js'
 import { site } from '../lib/site.js'
 import usePageMeta from '../lib/usePageMeta.js'
 import { bakeryJsonLd, bakeryJsonLdEn } from '../lib/structuredData.js'
-import { heroPhoto, photoForItem, photoAlt } from '../lib/photos.js'
+import { heroShopfront, photoForItem, photoAlt } from '../lib/photos.js'
 import { useLocale, localisedPath } from '../lib/i18n.js'
 import SectionHeading from '../components/SectionHeading.jsx'
 import PlaceholderImage from '../components/PlaceholderImage.jsx'
@@ -157,29 +157,28 @@ export default function Home() {
 
   return (
     <>
-      <section className="container home-hero" aria-labelledby="titolo-pagina">
-        <div className="home-hero-copy">
-          <span className="home-hero-kicker">{site.addressFull}</span>
-          <h1 id="titolo-pagina">{site.name}</h1>
-          <p className="home-tagline">{copy.tagline}</p>
-          <div className="btn-row home-hero-actions">
-            <Link className="btn btn-primary" to={localisedPath('/menu', locale)}>
-              {copy.seeMenu}
-            </Link>
-            <a className="btn btn-secondary" href={`tel:${site.phonePrimaryHref}`}>
-              {copy.call} {site.phonePrimary}
-            </a>
-          </div>
-        </div>
+      <section className="home-hero" aria-labelledby="titolo-pagina">
+        <img
+          className="home-hero-bg"
+          src={heroShopfront.image_url}
+          alt={photoAlt(heroShopfront, locale)}
+          fetchPriority="high"
+          decoding="async" />
 
-        <div className="home-hero-figure">
-          <img
-            className="home-hero-photo"
-            src={heroPhoto.src}
-            alt={locale === 'en' ? heroPhoto.alt_en : heroPhoto.alt}
-            width={heroPhoto.width}
-            height={heroPhoto.height}
-            fetchPriority="high" />
+        <div className="container home-hero-inner">
+          <div className="home-hero-copy">
+            <span className="home-hero-kicker">{site.addressFull}</span>
+            <h1 id="titolo-pagina">{site.name}</h1>
+            <p className="home-tagline">{copy.tagline}</p>
+            <div className="btn-row home-hero-actions">
+              <Link className="btn btn-primary" to={localisedPath('/menu', locale)}>
+                {copy.seeMenu}
+              </Link>
+              <a className="btn btn-on-dark" href={`tel:${site.phonePrimaryHref}`}>
+                {copy.call} {site.phonePrimary}
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
