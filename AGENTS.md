@@ -69,6 +69,7 @@ These rules apply to every file you write: code, comments, docs, and UI copy.
 
 - Never commit without asking for permission first. Wait for the user to approve before running git commit.
 - Small, focused commits, imperative subject line, no emojis in commit messages.
+- Commit subjects are 10 words or fewer and the message is the subject line only. Long explanations belong in ROADMAP.md, not in the commit.
 
 ## Before you finish
 
