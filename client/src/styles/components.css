@@ -241,6 +241,12 @@
   height: 1.15rem;
 }
 
+/* The handle sits after the mark and never breaks, the link reads as one
+   name on any screen. */
+.social-handle {
+  white-space: nowrap;
+}
+
 /* Opening hours. One line per schedule block, day on the left,
    schedule on the right, the day we are in marked with a chip. */
 

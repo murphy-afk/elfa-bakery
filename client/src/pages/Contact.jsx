@@ -18,9 +18,21 @@ const COPY = {
     social: 'Social',
     mapsLink: 'Apri la posizione su Google Maps',
     phoneNote: 'In caso di dubbi prova con il secondo numero.',
+    // The visible text is the handle only, the full profile name stays on
+    // the link for screen readers through aria-label.
     profiles: [
-      { network: 'instagram', href: site.instagram, label: 'Profilo Instagram di Elfa Bakery' },
-      { network: 'facebook', href: site.facebook, label: 'Pagina Facebook di Elfa Bakery' }
+      {
+        network: 'instagram',
+        href: site.instagram,
+        handle: site.instagramHandle,
+        label: 'Profilo Instagram di Elfa Bakery'
+      },
+      {
+        network: 'facebook',
+        href: site.facebook,
+        handle: site.facebookHandle,
+        label: 'Pagina Facebook di Elfa Bakery'
+      }
     ],
     socialNote:
       'Su Instagram e Facebook trovi le novità del negozio e i piatti del giorno.'
@@ -110,9 +122,12 @@ export default function Contact() {
             <ul className="info-list">
               {copy.profiles.map((profile) => (
                 <li key={profile.network}>
-                  <a className="social-link" href={profile.href}>
+                  <a
+                    className="social-link"
+                    href={profile.href}
+                    aria-label={profile.label}>
                     <SocialIcon network={profile.network} />
-                    {profile.label}
+                    <span className="social-handle">{profile.handle}</span>
                   </a>
                 </li>
               ))}

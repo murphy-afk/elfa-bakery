@@ -68,9 +68,9 @@ export default function Gallery() {
 
         <p className="status-note gallery-note">
           {copy.note}{' '}
-          <a className="social-link" href={site.instagram}>
+          <a className="social-link" href={site.instagram} aria-label={copy.instagram}>
             <SocialIcon network="instagram" />
-            {copy.instagram}
+            <span className="social-handle">{site.instagramHandle}</span>
           </a>
           {copy.noteTail}
         </p>

@@ -18,6 +18,10 @@ export const site = {
   phoneSecondaryHref: '+390236598767',
   instagram: 'https://www.instagram.com/elfa_bakery_milan',
   facebook: 'https://www.facebook.com/elfabakery',
+  // The handles shown next to the brand marks. They are the last segment
+  // of the profile urls above, so the two always stay in step.
+  instagramHandle: '@elfa_bakery_milan',
+  facebookHandle: '@elfabakery',
   mapsUrl:
     'https://www.google.com/maps/search/?api=1&query=Elfa+Bakery+Via+Sardegna+40+Milano'
 }
