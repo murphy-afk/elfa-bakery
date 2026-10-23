@@ -16,6 +16,10 @@ const COPY = {
     lede: 'Pizza al trancio, bagel, panini, piadine, kebab, focacce e pasticceria. Il listino è ancora in fase di conferma con il titolare, quindi i prezzi non sono ancora in linea.',
     count: (count) => `${count} proposte`,
     countEmpty: 'In aggiornamento',
+    expandCategory: (categoryName) => `Mostra le proposte: ${categoryName}`,
+    collapseCategory: (categoryName) => `Nascondi le proposte: ${categoryName}`,
+    expand: 'Mostra',
+    collapse: 'Nascondi',
     empty: 'I piatti di questa sezione arrivano a breve. Chiedi al banco per la disponibilità di oggi.',
     allergens: 'Allergeni',
     allergensText:
@@ -29,6 +33,10 @@ const COPY = {
     lede: 'Pizza by the slice, bagels, sandwiches, piadinas, kebab, focaccia and pastries. The price list is still being confirmed with the owner, so the prices are not online yet.',
     count: (count) => `${count} items`,
     countEmpty: 'Being updated',
+    expandCategory: (categoryName) => `Show items: ${categoryName}`,
+    collapseCategory: (categoryName) => `Hide items: ${categoryName}`,
+    expand: 'Show',
+    collapse: 'Hide',
     empty: 'The dishes in this section are coming soon. Ask at the counter for what is available today.',
     allergens: 'Allergens',
     allergensText:
@@ -45,6 +53,7 @@ export default function Menu() {
   // upgrade the data when an API answers, see client/src/lib/content.js.
   const [categories, setCategories] = useState(menuCategories)
   const [allergens, setAllergens] = useState(allergenList)
+  const [expandedCategories, setExpandedCategories] = useState({})
 
   usePageMeta({
     title: copy.title,
@@ -79,8 +88,10 @@ export default function Menu() {
 
       {categories.map((category) => {
         const titleId = `${category.slug}-title`
+        const contentId = `${category.slug}-content`
         const categoryName =
           locale === 'en' ? category.name_en || category.name_it : category.name_it
+        const isExpanded = expandedCategories[category.id] ?? false
 
         return (
           <section
@@ -89,25 +100,50 @@ export default function Menu() {
             key={category.id}
             aria-labelledby={titleId}>
             <div className="menu-category-head">
-              <h2 className="menu-category-title" id={titleId}>
-                {categoryName}
-              </h2>
-              <span className="menu-category-count">
-                {category.items.length > 0
-                  ? copy.count(category.items.length)
-                  : copy.countEmpty}
-              </span>
+              <div className="menu-category-label">
+                <h2 className="menu-category-title" id={titleId}>
+                  {categoryName}
+                </h2>
+                <span className="menu-category-count">
+                  {category.items.length > 0
+                    ? copy.count(category.items.length)
+                    : copy.countEmpty}
+                </span>
+              </div>
+              <button
+                className="menu-category-toggle"
+                type="button"
+                aria-controls={contentId}
+                aria-expanded={isExpanded}
+                aria-label={
+                  isExpanded
+                    ? copy.collapseCategory(categoryName)
+                    : copy.expandCategory(categoryName)
+                }
+                onClick={() =>
+                  setExpandedCategories((current) => ({
+                    ...current,
+                    [category.id]: !(current[category.id] ?? false)
+                  }))
+                }>
+                <span className="menu-category-toggle-icon" aria-hidden="true">
+                  {isExpanded ? '-' : '+'}
+                </span>
+                {isExpanded ? copy.collapse : copy.expand}
+              </button>
             </div>
 
-            {category.items.length === 0 ? (
-              <p className="menu-empty">{copy.empty}</p>
-            ) : (
-              <ul className="menu-list">
-                {category.items.map((item) => (
-                  <MenuItemCard item={item} key={item.id} />
-                ))}
-              </ul>
-            )}
+            <div className="menu-category-content" id={contentId} hidden={!isExpanded}>
+              {category.items.length === 0 ? (
+                <p className="menu-empty">{copy.empty}</p>
+              ) : (
+                <ul className="menu-list">
+                  {category.items.map((item) => (
+                    <MenuItemCard item={item} key={item.id} />
+                  ))}
+                </ul>
+              )}
+            </div>
           </section>
         )
       })}
